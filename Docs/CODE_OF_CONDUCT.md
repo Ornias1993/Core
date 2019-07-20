@@ -1,8 +1,8 @@
-**UnityStation Code of Conduct**
+**Expedition 13 Code of Conduct**
 
 **Intro**
 
-This code of conduct outlines our expectations for participants within the  **UnityStation** community, as well as steps to reporting unacceptable behavior. We are committed to providing a welcoming and inspiring community for all and expect our code of conduct to be honored. Anyone who violates this code of conduct may be banned from the community.
+This code of conduct outlines our expectations for participants within the  **Expedition 13** community, as well as steps to reporting unacceptable behavior. We are committed to providing a welcoming and inspiring community for all and expect our code of conduct to be honored. Anyone who violates this code of conduct may be banned from the community.
 
 Our open source community strives to:
 

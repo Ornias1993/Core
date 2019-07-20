@@ -14,7 +14,7 @@ Visit us on Steam:<br>
 
 ## Talk to us
 Please join us on Discord:<br>
-[<img src="https://www.seoclerk.com/pics/want57772-1PlHGI1515438378.png" width="75">](https://discordapp.com/channels/602130402743943168/602130402743943171)
+[<img src="https://www.seoclerk.com/pics/want57772-1PlHGI1515438378.png" width="75">](https://discord.gg/rVyqvFu)
 
 ## Feel like getting involved?
 Read our Quick Start guide [here](https://github.com/expedition13/core/wiki/Starting-contribution)
