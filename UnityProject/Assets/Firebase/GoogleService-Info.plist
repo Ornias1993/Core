@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>109888477040-dhj3hml2lrg0bvgeetnf68icr9eenf7p.apps.googleusercontent.com</string>
+	<string>619646835701-jmthfdr3olm1v55oc1k5f74lgqbajqff.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.109888477040-dhj3hml2lrg0bvgeetnf68icr9eenf7p</string>
+	<string>com.googleusercontent.apps.619646835701-jmthfdr3olm1v55oc1k5f74lgqbajqff</string>
 	<key>API_KEY</key>
-	<string>AIzaSyB7GorzPgwHYjSV4XaJoszj98tLM4_WZpE</string>
+	<string>AIzaSyBEe1lNwdSTPep9hMR6IyG2MTxpAzWTOVI</string>
 	<key>GCM_SENDER_ID</key>
-	<string>109888477040</string>
+	<string>619646835701</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>org.unitystation</string>
+	<string>org.expedition13</string>
 	<key>PROJECT_ID</key>
-	<string>unitystation-c6a53</string>
+	<string>expedition13</string>
 	<key>STORAGE_BUCKET</key>
-	<string>unitystation-c6a53.appspot.com</string>
+	<string>expedition13.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:109888477040:ios:3ef7c16a1f39c2f6</string>
+	<string>1:619646835701:ios:4a1bc55b24887719</string>
 	<key>DATABASE_URL</key>
-	<string>https://unitystation-c6a53.firebaseio.com</string>
+	<string>https://expedition13.firebaseio.com</string>
 </dict>
 </plist>

@@ -2,7 +2,7 @@
 using UnityEngine;
 
 /// <summary>
-/// Extensions for GameObject specifically for unitystation
+/// Extensions for GameObject specifically for Expedition13
 /// </summary>
 public static class GameObjectExtensions
 {

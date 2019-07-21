@@ -67,7 +67,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44381d5260d14ca1aa712b1df6babc60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverIP: play.unitystation.org
+  serverIP: play.Expedition13.org
   UIParent: {fileID: 1241466016374566}
 --- !u!1 &2287475957715393347
 GameObject:

@@ -132,7 +132,7 @@ public class CustomNetworkManager : NetworkManager
 		Config.ForUnity(Application.platform.ToString());
 		string path = Path.GetFullPath(".");
 		string folderName = Path.GetFileName(Path.GetDirectoryName(path));
-		ServerInit options = new ServerInit(folderName, "Unitystation");
+		ServerInit options = new ServerInit(folderName, "Expedition13");
 		server = new Server(801140, options);
 
 		if (server != null)
@@ -142,7 +142,7 @@ public class CustomNetworkManager : NetworkManager
 				server.DedicatedServer = true;
 			}
 			server.LogOnAnonymous();
-			server.ServerName = "Unitystation Official";
+			server.ServerName = "Expedition 13 Official";
 			// Set required settings for dedicated server
 
 			Logger.Log("Setting up Auth hook", Category.Steam);

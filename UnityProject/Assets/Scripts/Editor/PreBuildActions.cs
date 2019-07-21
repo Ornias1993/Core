@@ -32,7 +32,7 @@ class PreBuildActions : IPreprocessBuildWithReport
 
     //     process.Start();
     //     string output = process.StandardOutput.ReadToEnd();
-    //     PlayerSettings.productName = "unitystation - Latest commit: " + output;
+    //     PlayerSettings.productName = "Expedition13 - Latest commit: " + output;
     //     await process.WaitForExitAsync();
     // }
 }

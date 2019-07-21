@@ -8,7 +8,7 @@ static class BuildScript
 	{
 		BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
 		buildPlayerOptions.scenes = new[] {"Assets/scenes/Lobby.unity", "Assets/scenes/OutpostStation.unity"};
-		buildPlayerOptions.locationPathName = "../Tools/ContentBuilder/content/Server/Unitystation-Server";
+		buildPlayerOptions.locationPathName = "../Tools/ContentBuilder/content/Server/Expedition13-Server";
 		buildPlayerOptions.target = BuildTarget.StandaloneLinux64;
 		buildPlayerOptions.options = BuildOptions.None;
 		BuildPreferences.SetRelease(true);
@@ -18,7 +18,7 @@ static class BuildScript
 	{
 		BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
 		buildPlayerOptions.scenes = new[] {"Assets/scenes/Lobby.unity", "Assets/scenes/OutpostStation.unity"};
-		buildPlayerOptions.locationPathName = "../Tools/ContentBuilder/content/Windows/Unitystation.exe";
+		buildPlayerOptions.locationPathName = "../Tools/ContentBuilder/content/Windows/Expedition13.exe";
 		buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
 		buildPlayerOptions.options = BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.CompressWithLz4HC;
 		BuildPreferences.SetRelease(true);
@@ -28,7 +28,7 @@ static class BuildScript
 	{
 		BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
 		buildPlayerOptions.scenes = new[] {"Assets/scenes/Lobby.unity", "Assets/scenes/OutpostStation.unity"};
-		buildPlayerOptions.locationPathName = "../Tools/ContentBuilder/content/OSX/Unitystation.app";
+		buildPlayerOptions.locationPathName = "../Tools/ContentBuilder/content/OSX/Expedition13.app";
 		buildPlayerOptions.target = BuildTarget.StandaloneOSX;
 		buildPlayerOptions.options = BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.CompressWithLz4HC;
 		BuildPreferences.SetRelease(true);
@@ -38,7 +38,7 @@ static class BuildScript
 	{
 		BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
 		buildPlayerOptions.scenes = new[] {"Assets/scenes/Lobby.unity", "Assets/scenes/OutpostStation.unity"};
-		buildPlayerOptions.locationPathName = "../Tools/ContentBuilder/content/Linux/Unitystation";
+		buildPlayerOptions.locationPathName = "../Tools/ContentBuilder/content/Linux/Expedition13";
 		buildPlayerOptions.target = BuildTarget.StandaloneLinux64;
 		buildPlayerOptions.options = BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.CompressWithLz4HC;
 		BuildPreferences.SetRelease(true);
@@ -48,7 +48,7 @@ static class BuildScript
 	{
 		BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
 		buildPlayerOptions.scenes = new[] {"Assets/scenes/Lobby.unity", "Assets/scenes/OutpostStation.unity"};
-		buildPlayerOptions.locationPathName = "../Builds/OSX/Unitystation.app";
+		buildPlayerOptions.locationPathName = "../Builds/OSX/Expedition13.app";
 		buildPlayerOptions.options = BuildOptions.Development | BuildOptions.AllowDebugging;
 		buildPlayerOptions.target = BuildTarget.StandaloneOSX;
 		BuildPipeline.BuildPlayer(buildPlayerOptions);
@@ -57,7 +57,7 @@ static class BuildScript
 	{
 		BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
 		buildPlayerOptions.scenes = new[] {"Assets/scenes/Lobby.unity", "Assets/scenes/OutpostStation.unity"};
-		buildPlayerOptions.locationPathName = "../Builds/Linux/Unitystation";
+		buildPlayerOptions.locationPathName = "../Builds/Linux/Expedition13";
 		buildPlayerOptions.options = BuildOptions.Development | BuildOptions.AllowDebugging;
 		buildPlayerOptions.target = BuildTarget.StandaloneLinux64;
 		BuildPipeline.BuildPlayer(buildPlayerOptions);
@@ -66,7 +66,7 @@ static class BuildScript
 	{
 		BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
 		buildPlayerOptions.scenes = new[] {"Assets/scenes/Lobby.unity", "Assets/scenes/OutpostStation.unity"};
-		buildPlayerOptions.locationPathName = "../Builds/Windows/Unitystation.exe";
+		buildPlayerOptions.locationPathName = "../Builds/Windows/Expedition13.exe";
 		buildPlayerOptions.options = BuildOptions.Development | BuildOptions.AllowDebugging;
 		buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
 		BuildPipeline.BuildPlayer(buildPlayerOptions);

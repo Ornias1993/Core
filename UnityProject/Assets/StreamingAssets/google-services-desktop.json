@@ -11,27 +11,27 @@
       }, 
       "oauth_client": [
         {
-          "client_id": "109888477040-dhj3hml2lrg0bvgeetnf68icr9eenf7p.apps.googleusercontent.com"
+          "client_id": "619646835701-jmthfdr3olm1v55oc1k5f74lgqbajqff.apps.googleusercontent.com"
         }
       ], 
       "api_key": [
         {
-          "current_key": "AIzaSyB7GorzPgwHYjSV4XaJoszj98tLM4_WZpE"
+          "current_key": "AIzaSyBEe1lNwdSTPep9hMR6IyG2MTxpAzWTOVI"
         }
       ], 
       "client_info": {
-        "mobilesdk_app_id": "1:109888477040:ios:3ef7c16a1f39c2f6", 
+        "mobilesdk_app_id": "1:619646835701:ios:4a1bc55b24887719", 
         "android_client_info": {
-          "package_name": "org.unitystation"
+          "package_name": "org.expedition13"
         }
       }
     }
   ], 
   "configuration_version": "1", 
   "project_info": {
-    "storage_bucket": "unitystation-c6a53.appspot.com", 
-    "project_id": "unitystation-c6a53", 
-    "firebase_url": "https://unitystation-c6a53.firebaseio.com", 
-    "project_number": "109888477040"
+    "storage_bucket": "expedition13.appspot.com", 
+    "project_id": "expedition13", 
+    "firebase_url": "https://expedition13.firebaseio.com", 
+    "project_number": "619646835701"
   }
 }

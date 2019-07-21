@@ -26,7 +26,7 @@ namespace DatabaseAPI
 			}
 		}
 
-		private const string FirebaseRoot = "https://firestore.googleapis.com/v1/projects/unitystation-c6a53/databases/(default)/documents";
+		private const string FirebaseRoot = "https://firestore.googleapis.com/v1/projects/expedition13/databases/(default)/documents";
 		private Firebase.Auth.FirebaseAuth auth;
 		public static Firebase.Auth.FirebaseAuth Auth => Instance.auth;
 		private Dictionary<string, Firebase.Auth.FirebaseUser> userByAuth = new Dictionary<string, Firebase.Auth.FirebaseUser>();

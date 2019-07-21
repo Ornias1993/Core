@@ -2458,7 +2458,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: /unitystation/unitystation
+  m_Text: /expedition13/core
 --- !u!114 &5420618560931134732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4601,7 +4601,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: discord.gg/tFcTpBp
+  m_Text: discord.gg/rVyqvFu
 --- !u!114 &5420878988605977332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5510,7 +5510,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: r/unitystation
+  m_Text: r/expedition13
 --- !u!114 &5420085429432690708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5786,7 +5786,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Unitystation.org
+  m_Text: Expedition13.org
 --- !u!114 &5420723772017035936
 MonoBehaviour:
   m_ObjectHideFlags: 0

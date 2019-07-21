@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class MaryTTS : MonoBehaviour {
 	public static MaryTTS Instance;
 
-	private const string requestURL = "http://play.unitystation.org:59125/process";
+	private const string requestURL = "http://play.Expedition13.org:59125/process";
 	private MaryVoiceSettings defaultConfig = new MaryVoiceSettings();
 	public AudioSource audioSource;
 

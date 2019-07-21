@@ -12,8 +12,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: Unitystation
-  productName: unitystation
+  companyName: Expedition 13
+  productName: Expedition 13
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -106,6 +106,11 @@ PlayerSettings:
   xboxOneDisableEsram: 0
   xboxOnePresentImmediateThreshold: 0
   switchQueueCommandMemory: 0
+  switchQueueControlMemory: 16384
+  switchQueueComputeMemory: 262144
+  switchNVNShaderPoolsGranularity: 33554432
+  switchNVNDefaultPoolsGranularity: 16777216
+  switchNVNOtherPoolsGranularity: 16777216
   vulkanEnableSetSRGBWrite: 0
   m_SupportedAspectRatios:
     4:3: 0
@@ -149,9 +154,9 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.Zulu.Station
-    Standalone: unity.unitystation.unitystation
+    Standalone: org.expedition13
     Tizen: com.Company.ProductName
-    iOS: org.unitystation.ios
+    iOS: org.Expedition13.ios
     tvOS: com.Company.ProductName
   buildNumber:
     Standalone: 21
@@ -237,6 +242,7 @@ PlayerSettings:
   tvOSManualSigningProvisioningProfileType: 0
   appleEnableAutomaticSigning: 0
   iOSRequireARKit: 0
+  iOSAutomaticallyDetectAndAddCapabilities: 1
   appleEnableProMotion: 1
   clonedFromGUID: 00000000000000000000000000000000
   templatePackageId: 
@@ -665,6 +671,7 @@ PlayerSettings:
   switchAllowsRuntimeAddOnContentInstall: 0
   switchDataLossConfirmation: 0
   switchUserAccountLockEnabled: 0
+  switchSystemResourceMemory: 16777216
   switchSupportedNpadStyles: 3
   switchNativeFsCacheSize: 32
   switchIsHoldTypeHorizontal: 0
@@ -791,7 +798,7 @@ PlayerSettings:
   metroCertificateNotAfter: 0000000000000000
   metroApplicationDescription: tgstation-unity
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: Expedition 13
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
@@ -871,7 +878,7 @@ PlayerSettings:
   apiCompatibilityLevel: 3
   cloudProjectId: cd5be26b-512d-4c34-9ba7-ce526037540d
   framebufferDepthMemorylessMode: 0
-  projectName: unitystation
+  projectName: Expedition13
   organizationId: rob-3655378
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
