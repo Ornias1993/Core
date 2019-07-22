@@ -98,3 +98,7 @@ UnityProject/Assets/StreamingAssets/LogLevelDefaults/custom.json.meta
 
 # Travis
 *.ulf
+
+# Steam
+Tools/ContentBuilder/builder/
+!Tools/ContentBuilder/builder/steamcmd.exe

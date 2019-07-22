@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Text.RegularExpressions;
 using DatabaseAPI;
-using Facepunch.Steamworks;
+using Steamworks;
+using Steamworks.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -318,9 +319,9 @@ namespace Lobby
 			string steamName = "";
 			string prefsName;
 
-			if (Client.Instance != null)
+			if (SteamClient.IsValid)
 			{
-				steamName = Client.Instance.Username;
+				steamName = SteamClient.Name;
 			}
 
 			if (!string.IsNullOrEmpty(steamName))

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using Facepunch.Steamworks;
+using Steamworks;
+using Steamworks.Data;
 
 
 
@@ -30,9 +31,9 @@ using Facepunch.Steamworks;
 			screen_ConnectTo.SetActive(false);
 			string steamName = "";
 			string prefsName;
-			if ( Client.Instance != null )
+			if (SteamClient.IsValid)
 			{
-				steamName = Client.Instance.Username;
+				steamName = SteamClient.Name;
 			}
 			if (!string.IsNullOrEmpty(steamName))
 			{

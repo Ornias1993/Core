@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine.Networking;
-using Facepunch.Steamworks;
+using Steamworks;
+using Steamworks.Data;
 
 
 public class RequestAuthMessage : ClientMessage
@@ -20,23 +21,19 @@ public class RequestAuthMessage : ClientMessage
 //			yield break;
 //		}
 
+		// Primarily used for localhost
 		if ( PlayerList.IsConnWhitelisted(SentByPlayer) )
 		{
 			Logger.Log( $"Player whitelisted: {SentByPlayer}", Category.Steam);
 			yield break;
 		}
-		if ( SentByPlayer.SteamId != 0 )
-		{
-			Logger.Log( $"Player already authenticated: {SentByPlayer}", Category.Steam );
-			yield break;
-		}
-
+		
 		Logger.Log("Server Starting Auth for User: " + SteamID, Category.Steam);
-		if (Server.Instance != null && SteamID != 0 && TicketBinary != null)
+		if (SteamServer.IsValid && SteamID != 0 && TicketBinary != null)
 		{
 
 			//This results in a callback in CustomNetworkManager
-			if (!Server.Instance.Auth.StartSession(TicketBinary, SteamID))
+			if (!SteamServer.BeginAuthSession(TicketBinary, SteamID))
 			{
 				// This can trigger for a lot of reasons
 				// More info: http://projectzomboid.com/modding//net/puppygames/steam/BeginAuthSessionResult.html

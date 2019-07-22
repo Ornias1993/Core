@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using Facepunch.Steamworks;
+using Steamworks;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -24,7 +24,7 @@ public class JoinedViewer : NetworkBehaviour
 		// Send steamId to server for player setup.
 		if (BuildPreferences.isSteamServer)
 		{
-			CmdServerSetupPlayer(Client.Instance.SteamId);
+			CmdServerSetupPlayer(SteamClient.SteamId);
 		}
 		else
 		{
@@ -77,18 +77,18 @@ public class JoinedViewer : NetworkBehaviour
 	IEnumerator WaitUntilServerInit()
 	{
 		yield return WaitFor.EndOfFrame;
-		if (Client.Instance != null)
+		if(SteamClient.IsValid)
 		{
 			Logger.Log("Client Requesting Auth", Category.Steam);
 			// Generate authentication Ticket
-			var ticket = Client.Instance.Auth.GetAuthSessionTicket();
+			var ticket = SteamUser.GetAuthSessionTicket();
 			var ticketBinary = ticket.Data;
 			// Send Clientmessage to authenticate
-			RequestAuthMessage.Send(Client.Instance.SteamId, ticketBinary);
+			RequestAuthMessage.Send(SteamClient.SteamId, ticketBinary);
 		}
 		else
 		{
-			Logger.Log("Client NOT requesting auth", Category.Steam);
+			Logger.Log("Auth request Failed", Category.Steam);
 		}
 	}
 

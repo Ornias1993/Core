@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Facepunch.Steamworks;
+using Steamworks;
+using Steamworks.Data;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Profiling;
@@ -17,7 +18,6 @@ public class CustomNetworkManager : NetworkManager
 
 	[HideInInspector] public bool _isServer;
 	[HideInInspector] public bool spawnableListReady;
-	private Server server;
 	public GameObject humanPlayerPrefab;
 	public GameObject ghostPrefab;
 
@@ -107,10 +107,6 @@ public class CustomNetworkManager : NetworkManager
 
 	private void OnDisable()
 	{
-		if (_isServer && server != null && server.IsValid)
-		{
-			server.Auth.OnAuthChange -= AuthChange;
-		}
 		SceneManager.activeSceneChanged -= OnLevelFinishedLoading;
 	}
 
@@ -129,40 +125,38 @@ public class CustomNetworkManager : NetworkManager
 	{
 		// init the SteamServer needed for authentication of players
 		//
-		Config.ForUnity(Application.platform.ToString());
 		string path = Path.GetFullPath(".");
 		string folderName = Path.GetFileName(Path.GetDirectoryName(path));
-		ServerInit options = new ServerInit(folderName, "Expedition13");
-		server = new Server(801140, options);
-
-		if (server != null)
+		SteamServerInit  serverInit  = new SteamServerInit(folderName, "Expedition 13");
+		try
 		{
+    	SteamServer.Init( 787180, serverInit );
+		Logger.Log("Server registered", Category.Steam);
+
 			if (GameData.IsHeadlessServer || GameData.Instance.testServer || SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null)
 			{
-				server.DedicatedServer = true;
+				SteamServer.DedicatedServer = true;
 			}
-			server.LogOnAnonymous();
-			server.ServerName = "Expedition 13 Official";
-			// Set required settings for dedicated server
 
-			Logger.Log("Setting up Auth hook", Category.Steam);
-			//Process callback data for authentication
-			server.Auth.OnAuthChange = AuthChange;
+		SteamServer.LogOnAnonymous();
+		// Set required settings for dedicated server
+
+		Logger.Log("Setting up Auth hook", Category.Steam);
+
+		//Process callback data for authentication
+		SteamServer.OnValidateAuthTicketResponse += ProcessAuth;
+
 		}
-		// confirm in log if server is actually registered or not
-		if (server.IsValid)
+		catch ( System.Exception e)
 		{
-			Logger.Log("Server registered", Category.Steam);
-		}
-		else
-		{
-			Logger.Log("Server NOT registered", Category.Steam);
+    	// Couldn't init for some reason (dll errors, blocked ports)
+		Logger.Log("Server NOT registered" + e, Category.Steam);
 		}
 
 	}
 
-	/// Processes the callback data when authentication statuses change
-	public void AuthChange(ulong steamid, ulong ownerid, ServerAuth.Status status)
+	//Process incomming authentication responses from steam
+	public void ProcessAuth(SteamId steamid, SteamId ownerid, Steamworks.AuthResponse status)
 	{
 		var player = PlayerList.Instance.Get(steamid);
 		if (player == ConnectedPlayer.Invalid)
@@ -171,18 +165,22 @@ public class CustomNetworkManager : NetworkManager
 			return;
 		}
 
-		if (status == ServerAuth.Status.OK)
+		// User Authenticated
+		if (status == AuthResponse.OK)
 		{
 			Logger.LogWarning($"Steam gave us a 'ok' ticket response for already connected id {steamid}", Category.Steam);
 			return;
 		}
 
 		// Disconnect logging
-		if (status == ServerAuth.Status.VACCheckTimedOut)
+		if (status == AuthResponse.VACCheckTimedOut)
 		{
 			Logger.LogWarning($"The SteamID '{steamid}' left the server. ({status})", Category.Steam);
 			return;
 		}
+
+		//Kick players without valid Authentication
+		Kick(player, "Authentication failed for: " + steamid);
 	}
 
 	public static void Kick(ConnectedPlayer player, string raisins = "4 no raisins")
@@ -230,27 +228,19 @@ public class CustomNetworkManager : NetworkManager
 
 	void Update()
 	{
-		// This code makes sure the steam server is updated
-		if (server == null)
-			return;
-		try
+		if(SteamServer.IsValid)
 		{
-			Profiler.BeginSample("Steam Server Update");
-			server.Update();
+			SteamServer.RunCallbacks();
 		}
-		finally
-		{
-			Profiler.EndSample();
-		}
+		
 	}
 
-	private void OnDestroy()
+	private void OnApplicationQuit()
 	{
 		// This code makes sure the steam server is disposed when the CNM is destroyed
-		if (server != null)
+		if (SteamServer.IsValid)
 		{
-			server.Dispose();
-			server = null;
+			SteamServer.Shutdown();
 		}
 	}
 
