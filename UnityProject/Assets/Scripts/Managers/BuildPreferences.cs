@@ -45,7 +45,7 @@ public class BuildPreferences
     {
         string filePath = Application.dataPath + "/Resources/";
         var buildPrefs = new BuildPrefs();
-        buildPrefs.isForRelease = isOn;
+        buildPrefs.isForRelease = false;
         buildPrefs.isSteamServer = isOn;
         var json = JsonUtility.ToJson(buildPrefs);
         File.WriteAllText(filePath + "BuildPrefs.json", json);
