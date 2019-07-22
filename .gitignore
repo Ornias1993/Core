@@ -102,3 +102,16 @@ UnityProject/Assets/StreamingAssets/LogLevelDefaults/custom.json.meta
 # Steam
 Tools/ContentBuilder/builder/
 !Tools/ContentBuilder/builder/steamcmd.exe
+Tools/ContentBuilder/builder_linux/
+!Tools/ContentBuilder/builder_linux/steamcmd.sh
+!Tools/ContentBuilder/builder_linux/linux32/
+
+#BuildTools
+/ContentBuilder/content/Windows/
+/ContentBuilder/content/Linux/
+/ContentBuilder/content/OSX/
+/ContentBuilder/content/Server/
+!/ContentBuilder/content/Windows/Placeholder
+!/ContentBuilder/content/Linux/Placeholder
+!/ContentBuilder/content/OSX/Placeholder
+!/ContentBuilder/content/Server/Placeholder
