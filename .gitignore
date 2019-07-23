@@ -13,7 +13,10 @@
 /UnityProject/.idea/
 /UnityProject/.vs/
 .vs
+
+# Expedition13 build process
 /UnityProject/Assets/Resources/BuildPrefs.json
+/UnityProject/Assets/Resources/BuildPrefs.json.meta
 /UnityProject/Assets/StreamingAssets/config/
 
 /Assets/Photon\ Unity\ Networking/

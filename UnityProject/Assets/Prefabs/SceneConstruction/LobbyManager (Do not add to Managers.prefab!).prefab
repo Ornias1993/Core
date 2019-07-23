@@ -9278,7 +9278,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Choose a username:'
+  m_Text: 'Choose a display name:'
 --- !u!1 &4608557167934841053
 GameObject:
   m_ObjectHideFlags: 0
