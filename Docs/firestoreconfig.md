@@ -32,10 +32,11 @@ service cloud.firestore {
     }
     
     match /messages/{messageId} {
-        allow read: if signedIn();
-        allow create: if signedIn();
-        allow update, delete: if signedIn() && ownsMessage();
+      allow list: if isAdmin();
+    	allow get, update, delete: if isSelf() || isAdmin();
+    	allow create: if signedIn();
     }
   }
 }
+
 ```
