@@ -91,6 +91,7 @@ namespace DatabaseAPI
 				userByAuth[senderAuth.App.Name] = user;
 				if (signedIn)
 				{
+					Logger.Log("Signed In ", Category.DatabaseAPI);
 					//TODO: Display name stuff
 					/* 
 					displayName = user.DisplayName ?? "";

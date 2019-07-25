@@ -12,13 +12,11 @@ namespace DatabaseAPI
 			var userName = updateSettings.username;
 			var json = JsonUtility.ToJson(updateSettings);
 			var url = FirebaseRoot + $"/users/{Instance.user.UserId}?updateMask.fieldPaths=username&updateMask.fieldPaths=role&updateMask.fieldPaths=character";
-			Logger.Log("Using URL: " + url);
 			Instance.StartCoroutine(Instance.TryUpdateChar(url, json, userName, callBack, errorCallBack));
 		}
 
 		IEnumerator TryUpdateChar(string url, string jsonData, string newusername, Action<string> callBack, Action<string> errorCallBack)
 		{
-			Logger.Log("running for..." + newusername);
 			var payload = Newtonsoft.Json.JsonConvert.SerializeObject(new
 			{
 				fields = new
