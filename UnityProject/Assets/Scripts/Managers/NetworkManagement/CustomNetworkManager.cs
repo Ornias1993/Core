@@ -21,6 +21,8 @@ public class CustomNetworkManager : NetworkManager
 	public GameObject humanPlayerPrefab;
 	public GameObject ghostPrefab;
 
+	public SteamManager steamManager;
+ 
 	private void Awake()
 	{
 		if (Instance == null)
@@ -117,71 +119,12 @@ public class CustomNetworkManager : NetworkManager
 		this.RegisterServerHandlers();
 		if (BuildPreferences.isSteamServer)
 		{
-			SteamServerStart();
+			steamManager.SteamServerStart();
 		}
 	}
 
-	public void SteamServerStart()
-	{
-		// init the SteamServer needed for authentication of players
-		//
-		string path = Path.GetFullPath(".");
-		string folderName = Path.GetFileName(Path.GetDirectoryName(path));
-		SteamServerInit  serverInit  = new SteamServerInit(folderName, "Expedition 13");
-		try
-		{
-    	SteamServer.Init( 787180, serverInit );
-		Logger.Log("Server registered", Category.Steam);
 
-			if (GameData.IsHeadlessServer || GameData.Instance.testServer || SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null)
-			{
-				SteamServer.DedicatedServer = true;
-			}
 
-		SteamServer.LogOnAnonymous();
-		// Set required settings for dedicated server
-
-		Logger.Log("Setting up Auth hook", Category.Steam);
-
-		//Process callback data for authentication
-		SteamServer.OnValidateAuthTicketResponse += ProcessAuth;
-
-		}
-		catch ( System.Exception e)
-		{
-    	// Couldn't init for some reason (dll errors, blocked ports)
-		Logger.Log("Server NOT registered" + e, Category.Steam);
-		}
-
-	}
-
-	//Process incomming authentication responses from steam
-	public void ProcessAuth(SteamId steamid, SteamId ownerid, Steamworks.AuthResponse status)
-	{
-		var player = PlayerList.Instance.Get(steamid);
-		if (player == ConnectedPlayer.Invalid)
-		{
-			Logger.LogWarning($"Steam gave us a {status} ticket response for unconnected id {steamid}", Category.Steam);
-			return;
-		}
-
-		// User Authenticated
-		if (status == AuthResponse.OK)
-		{
-			Logger.LogWarning($"Steam gave us a 'ok' ticket response for already connected id {steamid}", Category.Steam);
-			return;
-		}
-
-		// Disconnect logging
-		if (status == AuthResponse.VACCheckTimedOut)
-		{
-			Logger.LogWarning($"The SteamID '{steamid}' left the server. ({status})", Category.Steam);
-			return;
-		}
-
-		//Kick players without valid Authentication
-		Kick(player, "Authentication failed for: " + steamid);
-	}
 
 	public static void Kick(ConnectedPlayer player, string raisins = "4 no raisins")
 	{
@@ -228,20 +171,11 @@ public class CustomNetworkManager : NetworkManager
 
 	void Update()
 	{
-		if(SteamServer.IsValid)
-		{
-			SteamServer.RunCallbacks();
-		}
-		
 	}
 
 	private void OnApplicationQuit()
 	{
-		// This code makes sure the steam server is disposed when the CNM is destroyed
-		if (SteamServer.IsValid)
-		{
-			SteamServer.Shutdown();
-		}
+
 	}
 
 	private void OnServerAddPlayerInternal(NetworkConnection conn, short playerControllerId)

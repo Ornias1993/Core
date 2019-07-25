@@ -1,4 +1,7 @@
 ﻿using Steamworks;
+using System;
+using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -54,6 +57,71 @@ public class SteamManager : MonoBehaviour
             }
     }
     }
+
+
+    	public void SteamServerStart()
+	{
+		// init the SteamServer needed for authentication of players
+		//
+		string path = Path.GetFullPath(".");
+		string folderName = Path.GetFileName(Path.GetDirectoryName(path));
+		SteamServerInit  serverInit  = new SteamServerInit(folderName, "Expedition 13");
+		try
+		{
+    	SteamServer.Init( 787180, serverInit );
+		Logger.Log("Server registered", Category.Steam);
+
+			if (GameData.IsHeadlessServer || GameData.Instance.testServer || SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null)
+			{
+				SteamServer.DedicatedServer = true;
+			}
+
+		SteamServer.LogOnAnonymous();
+		// Set required settings for dedicated server
+
+		Logger.Log("Setting up Auth hook", Category.Steam);
+
+		//Process callback data for authentication
+		SteamServer.OnValidateAuthTicketResponse += ProcessAuth;
+
+		}
+		catch ( System.Exception e)
+		{
+    	// Couldn't init for some reason (dll errors, blocked ports)
+		Logger.Log("Server NOT registered" + e, Category.Steam);
+		}
+
+	}
+
+    
+	//Process incomming authentication responses from steam
+	public void ProcessAuth(SteamId steamid, SteamId ownerid, Steamworks.AuthResponse status)
+	{
+		var player = PlayerList.Instance.Get(steamid);
+		if (player == ConnectedPlayer.Invalid)
+		{
+			Logger.LogWarning($"Steam gave us a {status} ticket response for unconnected id {steamid}", Category.Steam);
+			return;
+		}
+
+		// User Authenticated
+		if (status == AuthResponse.OK)
+		{
+			Logger.LogWarning($"Steam gave us a 'ok' ticket response for already connected id {steamid}", Category.Steam);
+			return;
+		}
+
+		// Disconnect logging
+		if (status == AuthResponse.VACCheckTimedOut)
+		{
+			Logger.LogWarning($"The SteamID '{steamid}' left the server. ({status})", Category.Steam);
+			return;
+		}
+
+		//Kick players without valid Authentication
+		CustomNetworkManager.Kick(player, "Authentication failed for: " + steamid);
+	}
+
     void Update()
     {
         // Dont run if there is no steam client to update
@@ -62,7 +130,7 @@ public class SteamManager : MonoBehaviour
             // Makes sure the steam client gets updated
             try
             {
-                UnityEngine.Profiling.Profiler.BeginSample("Steam Update");
+                UnityEngine.Profiling.Profiler.BeginSample("SteamClient Update");
                 SteamClient.RunCallbacks();
             }
             catch ( System.Exception e )
@@ -76,6 +144,25 @@ public class SteamManager : MonoBehaviour
                 UnityEngine.Profiling.Profiler.EndSample();
             }
         }
+
+        if(SteamServer.IsValid)
+		{
+            try
+            {
+                UnityEngine.Profiling.Profiler.BeginSample("SteamServer Update");
+                SteamServer.RunCallbacks();
+            }
+            catch ( System.Exception e )
+            {
+            // Something went wrong!
+                Logger.Log("Steam update error: " + e, Category.Steam);
+	        
+            }
+            finally
+            {
+                UnityEngine.Profiling.Profiler.EndSample();
+            }
+		}
     }
 
     private void OnApplicationQuit()
@@ -86,6 +173,12 @@ public class SteamManager : MonoBehaviour
             SteamUser.GetAuthSessionTicket().Cancel();
             SteamClient.Shutdown();
         }
+
+        // This code makes sure the steam server is disposed when the CNM is destroyed
+		if (SteamServer.IsValid)
+		{
+			SteamServer.Shutdown();
+		}
 
     }
 
