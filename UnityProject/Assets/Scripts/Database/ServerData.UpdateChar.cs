@@ -9,17 +9,21 @@ namespace DatabaseAPI
 	{
 		public static void UpdateCharacterProfile(CharacterSettings updateSettings, Action<string> callBack, Action<string> errorCallBack)
 		{
+			var userName = updateSettings.username;
 			var json = JsonUtility.ToJson(updateSettings);
-			var url = FirebaseRoot + $"/users/{Instance.user.UserId}/?updateMask.fieldPaths=character";
-			Instance.StartCoroutine(Instance.TryUpdateChar(url, json, callBack, errorCallBack));
+			var url = FirebaseRoot + $"/users/{Instance.user.UserId}/?updateMask.fieldPaths=character&updateMask.fieldPaths=username&updateMask.fieldPaths=roles";
+			Instance.StartCoroutine(Instance.TryUpdateChar(url, json, userName, callBack, errorCallBack));
 		}
 
-		IEnumerator TryUpdateChar(string url, string jsonData, Action<string> callBack, Action<string> errorCallBack)
+		IEnumerator TryUpdateChar(string url, string jsonData, string newusername, Action<string> callBack, Action<string> errorCallBack)
 		{
+			Logger.Log("running for..." + newusername);
 			var payload = Newtonsoft.Json.JsonConvert.SerializeObject(new
 			{
 				fields = new
 				{
+					username = new { stringValue = newusername },
+					roles = new { stringValue = ""},
 					character = new { stringValue = jsonData }
 				}
 			});
