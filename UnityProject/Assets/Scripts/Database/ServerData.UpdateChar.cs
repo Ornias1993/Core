@@ -11,7 +11,8 @@ namespace DatabaseAPI
 		{
 			var userName = updateSettings.username;
 			var json = JsonUtility.ToJson(updateSettings);
-			var url = FirebaseRoot + $"/users/{Instance.user.UserId}/?updateMask.fieldPaths=character&updateMask.fieldPaths=username&updateMask.fieldPaths=roles";
+			var url = FirebaseRoot + $"/users/{Instance.user.UserId}?updateMask.fieldPaths=username&updateMask.fieldPaths=role&updateMask.fieldPaths=character";
+			Logger.Log("Using URL: " + url);
 			Instance.StartCoroutine(Instance.TryUpdateChar(url, json, userName, callBack, errorCallBack));
 		}
 
@@ -23,7 +24,7 @@ namespace DatabaseAPI
 				fields = new
 				{
 					username = new { stringValue = newusername },
-					roles = new { stringValue = ""},
+					role = new { stringValue = ""},
 					character = new { stringValue = jsonData }
 				}
 			});
