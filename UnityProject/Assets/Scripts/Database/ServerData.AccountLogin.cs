@@ -43,8 +43,8 @@ namespace DatabaseAPI
 				}
 				yield return WaitFor.EndOfFrame;
 			}
-
-			var url = FirebaseRoot + $"/users/{Auth.CurrentUser.UserId}";
+			//Send a request to GET all data for a certain character
+			var url = FirebaseRoot + $"/users/{Auth.CurrentUser.UserId}/characters/1";
 			UnityWebRequest r = UnityWebRequest.Get(url);
 			r.SetRequestHeader("Authorization", $"Bearer {Instance.refreshToken}");
 

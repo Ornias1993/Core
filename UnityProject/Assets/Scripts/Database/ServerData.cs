@@ -127,13 +127,21 @@ namespace DatabaseAPI
 			if (isFirstTime)
 			{
 				isFirstTime = false;
+				UpdateUserProfile(PlayerManager.CurrentCharacterSettings.username, NewUserSuccess, NewUserFailed);
 				UpdateCharacterProfile(PlayerManager.CurrentCharacterSettings, NewCharacterSuccess, NewCharacterFailed);
 			}
 		}
 
+		// Series of blackhole hooks to dump results of database interaction into
 		void NewCharacterSuccess(string msg) { }
 
 		void NewCharacterFailed(string msg) { }
+
+		
+		void NewUserSuccess(string msg) { }
+
+		void NewUserFailed(string msg) { }
+		//end blackhole
 
 		public void OnLogOut()
 		{
