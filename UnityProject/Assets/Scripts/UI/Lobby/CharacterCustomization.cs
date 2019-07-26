@@ -228,6 +228,9 @@ namespace Lobby
 		//------------------
 		private void SaveData()
 		{
+			//Send update request for both user and character.
+			//TODO user update might not actually be needed here, need to check.
+			ServerData.UpdateUserProfile(currentCharacter.username, SaveDataSuccess, SaveDataError);
 			ServerData.UpdateCharacterProfile(currentCharacter, SaveDataSuccess, SaveDataError);
 			PlayerPrefs.SetString("currentcharacter", JsonUtility.ToJson(currentCharacter));
 			PlayerPrefs.Save();
