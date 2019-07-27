@@ -174,8 +174,8 @@ public class ControlTabs : MonoBehaviour
 
 	void Awake()
 	{
-		FingerPrefab = Resources.Load<GameObject>("PokeFinger");
-		TabHeaderPrefab = Resources.Load<GameObject>("HeaderTab");
+		FingerPrefab = Resources.Load<GameObject>("Prefabs/GUI/PokeFinger");
+		TabHeaderPrefab = Resources.Load<GameObject>("Prefabs/GUI/HeaderTab");
 	}
 
 	private void Start()

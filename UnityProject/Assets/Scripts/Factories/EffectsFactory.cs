@@ -29,13 +29,13 @@ public class EffectsFactory : NetworkBehaviour
 	private void Start()
 	{
 		//Do init stuff
-		fireTile = Resources.Load("FireTile") as GameObject;
-		smallBloodTile = Resources.Load("SmallBloodSplat") as GameObject;
-		mediumBloodTile = Resources.Load("MediumBloodSplat") as GameObject;
-		largeBloodTile = Resources.Load("LargeBloodSplat") as GameObject;
-		largeAshTile = Resources.Load("LargeAsh") as GameObject;
-		smallAshTile = Resources.Load("SmallAsh") as GameObject;
-		waterTile = Resources.Load("WaterSplat") as GameObject;
+		fireTile = Resources.Load("Prefabs/Effects/FireTile") as GameObject;
+		smallBloodTile = Resources.Load("Prefabs/Effects/SmallBloodSplat") as GameObject;
+		mediumBloodTile = Resources.Load("Prefabs/Effects/MediumBloodSplat") as GameObject;
+		largeBloodTile = Resources.Load("Prefabs/Effects/LargeBloodSplat") as GameObject;
+		largeAshTile = Resources.Load("Prefabs/Effects/LargeAsh") as GameObject;
+		smallAshTile = Resources.Load("Prefabs/Effects/SmallAsh") as GameObject;
+		waterTile = Resources.Load("Prefabs/Effects/WaterSplat") as GameObject;
 	}
 
 	//FileTiles are client side effects only, no need for network sync (triggered by same event on all clients/server)

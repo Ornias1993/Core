@@ -39,7 +39,7 @@ public class Managers : MonoBehaviour
 		if (CustomNetworkManager.Instance._isServer)
 		{
 			//Spawn the ProgressBar handler:
-			var p = PoolManager.PoolNetworkInstantiate(Resources.Load("ProgressBar") as GameObject, Vector3.zero);
+			var p = PoolManager.PoolNetworkInstantiate(Resources.Load("Prefabs/UI/ProgressBar") as GameObject, Vector3.zero);
 		}
 	}
 

@@ -18,7 +18,7 @@ public class CentComm : MonoBehaviour
 
 	void Start()
 	{
-		paperPrefab = Resources.Load<GameObject>("Paper");
+		paperPrefab = Resources.Load<GameObject>("Prefabs/Items/Other/Paper");
 	}
 
 	private void OnEnable()

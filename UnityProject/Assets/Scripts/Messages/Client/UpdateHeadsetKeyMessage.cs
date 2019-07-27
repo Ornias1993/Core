@@ -62,7 +62,7 @@ public class UpdateHeadsetKeyMessage : ClientMessage
 	{
 		Headset headset = headsetGO.GetComponent<Headset>();
 		GameObject encryptionKey =
-		Object.Instantiate(Resources.Load("EncryptionKey", typeof( GameObject )),
+		Object.Instantiate(Resources.Load("Prefabs/Items/Other/EncryptionKey", typeof( GameObject )),
 			headsetGO.transform.position,
 			headsetGO.transform.rotation,
 			headsetGO.transform.parent) as GameObject;

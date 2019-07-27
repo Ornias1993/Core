@@ -86,8 +86,8 @@ public class Integrity : NetworkBehaviour, IFireExposable, IRightClickable
 	{
 		if (SMALL_BURNING_PREFAB == null)
 		{
-			SMALL_BURNING_PREFAB = Resources.Load<GameObject>("SmallBurning");
-			LARGE_BURNING_PREFAB = Resources.Load<GameObject>("LargeBurning");
+			SMALL_BURNING_PREFAB = Resources.Load<GameObject>("Prefabs/Effects/SmallBurning");
+			LARGE_BURNING_PREFAB = Resources.Load<GameObject>("Prefabs/Effects/LargeBurning");
 		}
 		registerTile = GetComponent<RegisterTile>();
 		//this is just a guess - large items can't be picked up

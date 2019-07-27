@@ -44,7 +44,7 @@ public class MouseDraggable : MonoBehaviour
 	void Start()
 	{
 		mouseDrops = GetComponents<IInteractable<MouseDrop>>();
-		shadowPrefab = Resources.Load<GameObject>("MouseDragShadow");
+		shadowPrefab = Resources.Load<GameObject>("Prefabs/GUI/MouseDragShadow");
 		if (shadow == null)
 		{
 			shadow = GetComponentInChildren<SpriteRenderer>()?.sprite;

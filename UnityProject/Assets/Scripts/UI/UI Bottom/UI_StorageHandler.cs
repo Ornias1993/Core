@@ -10,7 +10,7 @@ public class UI_StorageHandler : MonoBehaviour
 
 	void Awake()
 	{
-		inventorySlotPrefab = Resources.Load("InventorySlot")as GameObject;
+		inventorySlotPrefab = Resources.Load("Prefabs/GUI/InventorySlot")as GameObject;
 	}
 
 	public void OpenStorageUI(StorageObject storageObj)

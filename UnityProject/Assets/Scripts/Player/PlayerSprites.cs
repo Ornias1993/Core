@@ -43,8 +43,8 @@ public class PlayerSprites : MonoBehaviour
 	{
 		if (ENGULFED_BURNING_OVERLAY_PREFAB == null)
 		{
-			ENGULFED_BURNING_OVERLAY_PREFAB = Resources.Load<GameObject>("EngulfedBurningPlayer");
-			PARTIAL_BURNING_OVERLAY_PREFAB = Resources.Load<GameObject>("PartialBurningPlayer");
+			ENGULFED_BURNING_OVERLAY_PREFAB = Resources.Load<GameObject>("Prefabs/Effects/EngulfedBurningPlayer");
+			PARTIAL_BURNING_OVERLAY_PREFAB = Resources.Load<GameObject>("Prefabs/Effects/PartialBurningPlayer");
 		}
 
 		if (engulfedBurningOverlay == null)

@@ -65,7 +65,7 @@ public class NetUIDynamicList : NetUIElement {
 		{
 			string elementType = $"{MasterTab.Type}Entry";
 			Logger.LogFormat( "{0} dynamic list: EntryPrefab not assigned, trying to find it as '{1}'", Category.NetUI, gameObject.name, elementType );
-			EntryPrefab = Resources.Load<GameObject>( elementType );
+			EntryPrefab = Resources.Load<GameObject>( "Prefabs/GUI/" + elementType );
 		}
 //		entryCount = 0;
 		foreach ( DynamicEntry value in Entries )

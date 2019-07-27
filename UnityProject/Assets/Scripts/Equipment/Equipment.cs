@@ -30,7 +30,7 @@ public class Equipment : NetworkBehaviour
 
 		gasSlots = InitPotentialGasSlots();
 		maskSlot = playerInventory.Find(s => s.SlotName == "mask");
-		idPrefab = Resources.Load<GameObject>("ID");
+		idPrefab = Resources.Load<GameObject>("Prefabs/Items/IDs/ID");
 	}
 
 	private InventorySlot[] InitPotentialGasSlots()

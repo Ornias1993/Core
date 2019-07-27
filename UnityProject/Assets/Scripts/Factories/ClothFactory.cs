@@ -31,9 +31,9 @@ public class ClothFactory : NetworkBehaviour
 	private void Start()
 	{
 		//Do init stuff
-		uniCloth = Resources.Load("UniCloth") as GameObject;
-		uniHeadSet = Resources.Load("UniHeadSet") as GameObject;
-		uniBackPack = Resources.Load("UniBackPack") as GameObject;
+		uniCloth = Resources.Load("Prefabs/Items/Clothing/UniCloth") as GameObject;
+		uniHeadSet = Resources.Load("Prefabs/Items/Clothing/UniHeadSet") as GameObject;
+		uniBackPack = Resources.Load("Prefabs/Items/Clothing/UniBackPack") as GameObject;
 	}
 
 	private static bool IsInstanceInit()

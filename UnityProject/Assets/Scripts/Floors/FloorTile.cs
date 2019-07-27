@@ -15,7 +15,7 @@ public class FloorTile : MonoBehaviour
 	{
 		if (ambientTile == null)
 		{
-			ambientTile = Instantiate(Resources.Load("AmbientTile") as GameObject, transform.position,
+			ambientTile = Instantiate(Resources.Load("Prefabs/Semi_Objects/Lights/AmbientTile") as GameObject, transform.position,
 				Quaternion.identity, transform);
 		}
 	}

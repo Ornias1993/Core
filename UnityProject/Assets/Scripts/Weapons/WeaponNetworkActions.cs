@@ -36,7 +36,7 @@ public class WeaponNetworkActions : ManagedNetworkBehaviour
 		playerScript = GetComponent<PlayerScript>();
 		lerpSprite = null;
 
-		casingPrefab = Resources.Load("BulletCasing") as GameObject;
+		casingPrefab = Resources.Load("Prefabs/Items/Weapons/Projectiles/BulletCasing") as GameObject;
 	}
 
 	[Command]

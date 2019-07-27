@@ -13,7 +13,7 @@ public class RawMeat : MonoBehaviour
 	{
 		integrity = GetComponent<Integrity>();
 		integrity.OnBurnUpServer += OnBurnUpServer;
-		meatSteakPrefab = Resources.Load<GameObject>("Meat Steak");
+		meatSteakPrefab = Resources.Load<GameObject>("Prefabs/Items/Food/Meat Steak");
 		registerTile = GetComponent<RegisterTile>();
 	}
 

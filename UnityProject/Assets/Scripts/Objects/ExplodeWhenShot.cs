@@ -178,7 +178,7 @@ public class ExplodeWhenShot : NetworkBehaviour
 		GameObject fireRing = Resources.Load<GameObject>("effects/FireRing");
 		Instantiate(fireRing, transform.position, Quaternion.identity);
 
-		GameObject lightFx = Resources.Load<GameObject>("lighting/BoomLight");
+		GameObject lightFx = Resources.Load<GameObject>("Prefabs/Semi_Objects/Lights/lighting/BoomLight");
 		lightFxInstance = Instantiate(lightFx, transform.position, Quaternion.identity);
 		//LightSprite lightSprite = lightFxInstance.GetComponentInChildren<LightSprite>();
 		//lightSprite.fadeFX(1f);

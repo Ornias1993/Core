@@ -124,7 +124,7 @@ public struct NetTabDescriptor {
 		if ( provider == null ) {
 			return null;
 		}
-		var tabObject = Object.Instantiate( Resources.Load( $"Tab{type}" ) as GameObject, parent );
+		var tabObject = Object.Instantiate( Resources.Load( $"Prefabs/GUI/Tab{type}" ) as GameObject, parent );
 		NetTab netTab = tabObject.GetComponent<NetTab>();
 		netTab.Provider = provider.gameObject;
 		return netTab;

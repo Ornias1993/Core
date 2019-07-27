@@ -18,9 +18,9 @@ public static class ItemFactory
 	private static void EnsureInit()
 	{
 		if (hasInit) return;
-		metalPrefab = Resources.Load<GameObject>("Metal");
-		glassShardPrefab = Resources.Load("GlassShard") as GameObject;
-		rodsPrefab = Resources.Load("Rods") as GameObject;
+		metalPrefab = Resources.Load<GameObject>("Prefabs/Items/ConstructionMaterials/Metal");
+		glassShardPrefab = Resources.Load("Prefabs/Items/ConstructionMaterials/GlassShard") as GameObject;
+		rodsPrefab = Resources.Load("Prefabs/Items/ConstructionMaterials/Rods") as GameObject;
 		hasInit = true;
 	}
 

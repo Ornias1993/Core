@@ -143,7 +143,7 @@ public class Gun : NBAimApplyInteractable, IInteractable<HandActivate>, IInterac
 
 		if (Projectile == null)
 		{
-			Projectile = Resources.Load("Bullet_12mm") as GameObject;
+			Projectile = Resources.Load("Prefabs/Items/Weapons/Projectiles/Bullet_12mm") as GameObject;
 		}
 
 		queuedShots = new Queue<QueuedShot>();
@@ -350,7 +350,7 @@ public class Gun : NBAimApplyInteractable, IInteractable<HandActivate>, IInterac
 
 	public override void OnStartServer()
 	{
-		GameObject ammoPrefab = Resources.Load("Rifles/Magazine_" + AmmoType) as GameObject;
+		GameObject ammoPrefab = Resources.Load("Prefabs/Items/Magazines/Rifles/Magazine_" + AmmoType) as GameObject;
 
 		GameObject m = PoolManager.PoolNetworkInstantiate(ammoPrefab, parent: transform.parent);
 		var cnt = m.GetComponent<CustomNetTransform>();
@@ -512,7 +512,7 @@ public class Gun : NBAimApplyInteractable, IInteractable<HandActivate>, IInterac
 			{
 				if (casingPrefab == null)
 				{
-					casingPrefab = Resources.Load("BulletCasing") as GameObject;
+					casingPrefab = Resources.Load("Prefabs/Items/Weapons/Projectiles/BulletCasing") as GameObject;
 				}
 
 				PoolManager.PoolNetworkInstantiate(casingPrefab, nextShot.shooter.transform.position, nextShot.shooter.transform.parent);
@@ -538,7 +538,7 @@ public class Gun : NBAimApplyInteractable, IInteractable<HandActivate>, IInterac
 		FireCountDown += 1.0 / FireRate;
 		CurrentMagazine.ammoRemains--;
 		//get the bullet prefab being shot
-		GameObject bullet = PoolManager.PoolClientInstantiate(Resources.Load(Projectile.name) as GameObject,
+		GameObject bullet = PoolManager.PoolClientInstantiate(Resources.Load("Prefabs/Items/Weapons/Projectiles/" + Projectile.name) as GameObject,
 			shooter.transform.position);
 		float angle = Mathf.Atan2(finalDirection.y, finalDirection.x) * Mathf.Rad2Deg;
 
