@@ -11,6 +11,11 @@ namespace DatabaseAPI
 {
 	public partial class ServerData : MonoBehaviour
 	{
+		///<summary>
+		/// Main processor for firebase authentication
+		///</summary>
+
+
 		class Status { public bool error = false; public bool profileSet = false; public bool charReceived = false; }
 
 		private static ServerData serverData;
@@ -35,6 +40,7 @@ namespace DatabaseAPI
 		public string token;
 		public string refreshToken;
 		public bool isFirstTime = false;
+		
 
 		void Start()
 		{
@@ -86,6 +92,7 @@ namespace DatabaseAPI
 				if (!signedIn && user != null)
 				{
 					Logger.Log("Signed out ", Category.DatabaseAPI);
+					PlayerPrefs.DeleteKey ("charactersettings");
 				}
 				user = senderAuth.CurrentUser;
 				userByAuth[senderAuth.App.Name] = user;
@@ -126,9 +133,10 @@ namespace DatabaseAPI
 
 			if (isFirstTime)
 			{
+				//Always send a character at account creation, even if it's just a default character to prevent 404 on characterlookup
 				isFirstTime = false;
-				UpdateUserProfile(PlayerManager.CurrentCharacterSettings.username, NewUserSuccess, NewUserFailed);
-				UpdateCharacterProfile(PlayerManager.CurrentCharacterSettings, NewCharacterSuccess, NewCharacterFailed);
+				string charpath = "/characters/1";
+				ObjectUpdate(PlayerManager.CurrentCharacterSettings, charpath, NewCharacterSuccess, NewCharacterFailed);
 			}
 		}
 
@@ -137,10 +145,6 @@ namespace DatabaseAPI
 
 		void NewCharacterFailed(string msg) { }
 
-		
-		void NewUserSuccess(string msg) { }
-
-		void NewUserFailed(string msg) { }
 		//end blackhole
 
 		public void OnLogOut()
@@ -150,8 +154,13 @@ namespace DatabaseAPI
 			refreshToken = "";
 			PlayerPrefs.SetString("username", "");
 			PlayerPrefs.SetString("cookie", "");
+			PlayerPrefs.SetString("userprofile", "");
+			PlayerPrefs.SetString ("charactersettings", "");
 			PlayerPrefs.SetInt("autoLogin", 0);
 			PlayerPrefs.Save();
 		}
+
+
+
 	}
 }

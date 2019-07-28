@@ -2,6 +2,7 @@ Rules for firestore
 
 ```
 rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -16,7 +17,6 @@ service cloud.firestore {
         	'ADMIN'in get(/databases/$(database)/documents/users/$(request.auth.uid)).data.roles.values();
     }
     
-    // allow editing your own folder
     function ownsData(userId) {
         return signedIn() && request.auth.uid == userId;
     }
@@ -25,10 +25,10 @@ service cloud.firestore {
     function isSelf() {
     	    return signedIn() && request.auth.uid == resource.id;
     }
-    
-    // Prevent editing of role.
+
+    // Prevent editing of role other than a blank one
     function secRole() {
-    	    return !request.resource.data.keys().hasAll(['role']) ||  request.resource.data.role == resource.data.role;
+    	    return !request.resource.data.keys().hasAll(['role']) || request.resource.data.role == "" ||  request.resource.data.role == resource.data.role;
     }
     
     // Rules
@@ -42,8 +42,7 @@ service cloud.firestore {
     		allow read, update, delete: if ownsData(userId);
     		allow create: if signedIn();
     }}
-
-
+    
     // Part of website that is going to be removed
     match /messages/{messageId} {
       allow list: if isAdmin();

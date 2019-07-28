@@ -114,7 +114,9 @@ namespace Lobby
 			}
 		}
 
-		//Make sure we have the latest DisplayName from Auth
+
+		//Make sure we have the latest DisplayName from firebase Auth
+		//TODO maybe use username from profile instead?
 		IEnumerator WaitForReloadProfile()
 		{
 			ServerData.ReloadProfile();
@@ -140,25 +142,30 @@ namespace Lobby
 
 		public void CreationNextButton()
 		{
+			PlayerPrefs.SetString ("charactersettings", "");
 			SoundManager.Play("Click01");
 			HideAllPanels();
 			pendingCreationPanel.SetActive(true);
 			nextCreationButton.SetActive(false);
 			goBackCreationButton.SetActive(false);
 			pleaseWaitCreationText.text = "Please wait..";
-
 			ServerData.TryCreateAccount(chosenUsernameInput.text, chosenPasswordInput.text,
 				emailAddressInput.text, AccountCreationSuccess, AccountCreationError);
 		}
 
-		private void AccountCreationSuccess(CharacterSettings charSettings)
+		private void AccountCreationSuccess(string proposedName)
 		{
+			//Once created create user profile first
+			string userpath = "";
+			PlayerManager.CurrentUserProfile.username = proposedName;
+			ServerData.ObjectUpdate(PlayerManager.CurrentUserProfile, userpath, NewUserProfileSuccess, NewUserProfileFailed);
+			
+			
+			//Prepare and show CharacterEditor for first character
 			pleaseWaitCreationText.text = "Created Successfully";
-			PlayerManager.CurrentCharacterSettings = charSettings;
 			GameData.LoggedInUsername = chosenUsernameInput.text;
 			chosenPasswordInput.text = "";
 			chosenUsernameInput.text = "";
-			
 			ShowCharacterEditor();
 			PlayerPrefs.SetString("lastLogin", emailAddressInput.text);
 			PlayerPrefs.Save();
@@ -166,11 +173,16 @@ namespace Lobby
 			emailAddressInput.text = "";
 		}
 
+		//TODO Doesnt seem to handle wrongly formated emailadresses right
 		private void AccountCreationError(string errorText)
 		{
 			pleaseWaitCreationText.text = errorText;
 			goBackCreationButton.SetActive(true);
 		}
+
+		static void NewUserProfileSuccess(string msg) { }
+
+		static void NewUserProfileFailed(string msg) { }
 
 		public void OnLogin()
 		{
@@ -206,18 +218,20 @@ namespace Lobby
 			ShowLoginScreen();
 		}
 
-		private void LoginSuccess(string msg)
+		private void LoginSuccess(CharacterSettings characterSettings)
 		{
+			//Put character for current logged in user into playerprefs and playermanager
+			//TODO Show character editor if no character is recieved but loggin succeded
 			loggingInText.text = "Login Success..";
-			var characterSettings = JsonUtility.FromJson<CharacterSettings>(Regex.Unescape(msg));
-			PlayerPrefs.SetString("currentcharacter", msg);
+			string json = JsonUtility.ToJson(characterSettings);
+			PlayerPrefs.SetString("currentcharacter", json);
 			PlayerManager.CurrentCharacterSettings = characterSettings;
 			ShowConnectionPanel();
 		}
 
 		private void LoginError(string msg)
 		{
-			ServerData.Auth.SignOut(); //just incase
+			ServerData.Auth.SignOut(); //just in case
 			loggingInText.text = "Login failed:" + msg;
 			loginGoBackButton.SetActive(true);
 		}
@@ -245,7 +259,7 @@ namespace Lobby
 			}
 
 			// Set and cache player name
-			PlayerPrefs.SetString(UserNamePlayerPref, PlayerManager.CurrentCharacterSettings.Name);
+			PlayerPrefs.SetString(UserNamePlayerPref, PlayerManager.CurrentUserProfile.username);
 
 			// Start game
 			dialogueTitle.text = "Starting Game...";

@@ -10,10 +10,10 @@ namespace DatabaseAPI
 		///Tries to create an account for the user in player accounts
 		///</summary>
 		public static void TryCreateAccount(string proposedName, string _password, string emailAcc,
-			Action<CharacterSettings> callBack, Action<string> errorCallBack)
+			Action<string> callBack, Action<string> errorCallBack)
 		{
-			var newCharacter = new CharacterSettings();
-			newCharacter.Name = StringManager.GetRandomMaleName();
+			//TODO Maybe account creation isn't the best place to set a random character name?
+			
 			
 			Instance.isFirstTime = true;
 			var status = new Status();
@@ -36,12 +36,12 @@ namespace DatabaseAPI
 				}
 			});
 
-			Instance.StartCoroutine(WaitForResponse(newCharacter, callBack, errorCallBack,
-				status, proposedName));
+			Instance.StartCoroutine(WaitForResponse(proposedName, callBack, errorCallBack,
+				status));
 		}
 
-		static IEnumerator WaitForResponse(CharacterSettings character, Action<CharacterSettings> callBack,
-			Action<string> errorCallBack, Status status, string proposedName)
+		static IEnumerator WaitForResponse(string proposedName, Action<string> callBack,
+			Action<string> errorCallBack, Status status)
 		{
 			//Timeout
 			float timeOutTime = 60f;
@@ -56,15 +56,17 @@ namespace DatabaseAPI
 				{
 					if (!status.profileSet)
 					{
+						//Sets the (currently not very much used) Firebase userprofile (not the same as game userprofile!)
 						UpdateProfile(proposedName, status, callBack, errorCallBack);
 						status.profileSet = true;
 					}
+						// If the userprofile is set, stop the while loop.
 					if (!string.IsNullOrEmpty(Instance.auth.CurrentUser.DisplayName))
 					{
 						isAuthed = true;
 					}
 				}
-
+					//Cancel while loop without setting isAuth to trigger error.
 				if (timeCount >= timeOutTime || status.error)
 				{
 					break;
@@ -74,8 +76,9 @@ namespace DatabaseAPI
 
 			if (isAuthed)
 			{
-				character.username = proposedName;
-				callBack.Invoke(character);
+
+				
+				callBack.Invoke(proposedName);
 			}
 			else
 			{
@@ -83,14 +86,17 @@ namespace DatabaseAPI
 				errorCallBack.Invoke("Response timed out, please try again");
 			}
 		}
-		static void UpdateProfile(string proposedName, Status status, Action<CharacterSettings> callBack,
+
+
+
+		static void UpdateProfile(string proposedName, Status status, Action<string> callBack,
 			Action<string> errorCallBack)
 		{
 
 			Firebase.Auth.UserProfile profile = new Firebase.Auth.UserProfile
 			{
 				DisplayName = proposedName, //May be used for OOC chat, so find way to detect imposters
-					PhotoUrl = null //TODO: set up later (user will eventually be able to update profile photo via the website)
+				PhotoUrl = null //TODO: set up later (user will eventually be able to update profile photo via the website)
 			};
 
 			Instance.auth.CurrentUser.UpdateUserProfileAsync(profile).ContinueWith(profileTask =>

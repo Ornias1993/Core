@@ -20,6 +20,8 @@ public class PlayerManager : MonoBehaviour
 
 	public static CharacterSettings CurrentCharacterSettings { get; set; }
 
+	public static UserProfile CurrentUserProfile { get; set; }
+
 	private int mobIDcount;
 
 	public static PlayerManager Instance
@@ -35,18 +37,27 @@ public class PlayerManager : MonoBehaviour
 		}
 	}
 
-#if UNITY_EDITOR	//Opening the station scene instead of going through the lobby
+
 	void Awake()
 	{
+
+		//Set up the CurrentCharacterSettings at launch with default data, prevents NRE
 		if (CurrentCharacterSettings == null){
-			CurrentCharacterSettings = JsonUtility.FromJson<CharacterSettings>(Regex.Unescape(PlayerPrefs.GetString("currentcharacter")));
 			if (CurrentCharacterSettings == null)
 			{
 				CurrentCharacterSettings = new CharacterSettings();
 			}
 		}
+
+		//Set up the CurrentCharacterSettings at launchwith default data,, prevents NRE
+		if (CurrentUserProfile == null){
+			if (CurrentUserProfile == null)
+			{
+				CurrentUserProfile = new UserProfile();
+			}
+		}
 	}
-#endif
+
 
 	private void OnEnable()
 	{

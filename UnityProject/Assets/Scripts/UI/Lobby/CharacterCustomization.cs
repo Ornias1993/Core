@@ -68,12 +68,11 @@ namespace Lobby
 			DoInitChecks();
 		}
 
-		//First time setting up this character etc?
+		//First time setting up this character or error creating?
 		private void DoInitChecks()
 		{
-			if (string.IsNullOrEmpty(currentCharacter.username))
+			if (string.IsNullOrEmpty(currentCharacter.Name) || currentCharacter.Name == "Cuban Pete")
 			{
-				currentCharacter.username = ServerData.Auth.CurrentUser.DisplayName;
 				RollRandomCharacter();
 				SaveData();
 			}
@@ -228,10 +227,9 @@ namespace Lobby
 		//------------------
 		private void SaveData()
 		{
-			//Send update request for both user and character.
-			//TODO user update might not actually be needed here, need to check.
-			ServerData.UpdateUserProfile(currentCharacter.username, SaveDataSuccess, SaveDataError);
-			ServerData.UpdateCharacterProfile(currentCharacter, SaveDataSuccess, SaveDataError);
+			//Send update request for character.
+			string path = "/characters/1";
+			ServerData.ObjectUpdate(currentCharacter, path, SaveDataSuccess, SaveDataError);
 			PlayerPrefs.SetString("currentcharacter", JsonUtility.ToJson(currentCharacter));
 			PlayerPrefs.Save();
 		}
@@ -590,11 +588,19 @@ namespace Lobby
 	}
 }
 
+//This defines the keys and default values a "UserProfile" Contains and can easily be uploaded to the server at account creation.
+	[Serializable]
+	public class UserProfile
+	{
+		public string username;
+		public string role = "";
+	}
+
+//This defines the keys and default values "CharacterSettings" Contain and can easily be uploaded to the server at character creation and character editing.
 [Serializable]
 public class CharacterSettings
 {
 	public const int MAX_NAME_LENGTH = 28; //Arbitrary limit, but it seems reasonable
-	public string username;
 	public string Name = "Cuban Pete";
 	public Gender Gender = Gender.Male;
 	public int Age = 22;
