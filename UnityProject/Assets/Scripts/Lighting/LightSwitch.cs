@@ -96,7 +96,7 @@ public class LightSwitch : NetworkBehaviour, IInteractable<HandApply>
 	{
 		if (Voltage < AtShutOffVoltage && isOn == States.On)
 		{
-			isOn = States.PowerCut;
+			SyncLightSwitch( States.PowerCut);
 			PowerCut = true;
 			if (PowerCut)
 			{
@@ -106,13 +106,14 @@ public class LightSwitch : NetworkBehaviour, IInteractable<HandApply>
 		}
 		else if (PowerCut == true && Voltage > AtShutOffVoltage)
 		{
-			isOn = States.On;
+			SyncLightSwitch(States.On);
 			PowerCut = false;
 		}
 
 	}
 	public override void OnStartClient()
 	{
+		SyncLightSwitch(this.isOn);
 		StartCoroutine(WaitForLoad());
 	}
 
@@ -188,7 +189,7 @@ public class LightSwitch : NetworkBehaviour, IInteractable<HandApply>
 		}
 		if (RelatedAPC == null && !SelfPowered)
 		{
-			isOn = States.PowerCut;
+			SyncLightSwitch(States.PowerCut);
 		}
 	}
 
@@ -238,6 +239,7 @@ public class LightSwitch : NetworkBehaviour, IInteractable<HandApply>
 
 	private void SyncLightSwitch(States state)
 	{
+		isOn = state;
 		if (state == States.On)
 		{
 			DetectLightsAndAction(true);
