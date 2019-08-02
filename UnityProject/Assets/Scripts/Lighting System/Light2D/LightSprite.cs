@@ -31,6 +31,7 @@ namespace Light2D
 
         protected override void OnEnable()
         {
+	        base.OnEnable();
             AllLightSprites.Add(this);
         }
 

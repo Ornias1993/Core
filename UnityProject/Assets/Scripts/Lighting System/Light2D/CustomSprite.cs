@@ -68,11 +68,11 @@ namespace Light2D
 
         protected virtual void OnEnable()
         {
-	        if (initialized)
-	        {
-		        return;
-	        }
-	        initialized = true;
+            if (initialized)
+            {
+                return;
+            }
+            initialized = true;
 
             _colors = new Color[4];
             _uv1 = new Vector2[4];
@@ -111,7 +111,7 @@ namespace Light2D
 
         protected virtual void Start()
         {
-	        UpdateMeshData(true);
+            UpdateMeshData(true);
         }
 
         private void OnWillRenderObject()
