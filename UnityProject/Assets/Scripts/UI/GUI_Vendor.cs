@@ -150,6 +150,7 @@ public class GUI_Vendor : NetTab
 		StartCoroutine(VendorInputCoolDown());
 	}
 
+	//Check if vendor can sell an item, send message if denied
 	private bool CanSell(VendorItem itemToSpawn)
 	{
 		if (allowSell && itemToSpawn != null && itemToSpawn.Stock > 0)
