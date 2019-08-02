@@ -876,10 +876,10 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 3
-  cloudProjectId: cd5be26b-512d-4c34-9ba7-ce526037540d
+  cloudProjectId: 3587cd54-b831-4b8d-b0ca-84523d9d5728
   framebufferDepthMemorylessMode: 0
-  projectName: Expedition13
-  organizationId: rob-3655378
+  projectName: Expedition 13 Core
+  organizationId: expedition-13
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
