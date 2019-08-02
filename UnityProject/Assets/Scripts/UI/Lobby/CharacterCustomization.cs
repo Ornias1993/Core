@@ -593,7 +593,7 @@ namespace Lobby
 	public class UserProfile
 	{
 		public string username;
-		public string role = "";
+		public string role = "USER";
 	}
 
 //This defines the keys and default values "CharacterSettings" Contain and can easily be uploaded to the server at character creation and character editing.
