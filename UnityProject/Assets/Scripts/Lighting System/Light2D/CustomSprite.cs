@@ -54,6 +54,7 @@ namespace Light2D
         public static Dictionary<MaterialKey, MaterialValue> MaterialMap = new Dictionary<MaterialKey, MaterialValue>();
         private const string GeneratedMaterialName = "Generated Material (DONT change it)";
         private const string GeneratedMeshName = "Generated Mesh (DONT change it)";
+        private bool initialized = false;
 
         public bool RendererEnabled { get; private set; }
 
@@ -65,8 +66,14 @@ namespace Light2D
             get { return _meshRenderer.isPartOfStaticBatch; }
         }
 
-        protected virtual void Start()
+        protected virtual void OnEnable()
         {
+	        if (initialized)
+	        {
+		        return;
+	        }
+	        initialized = true;
+
             _colors = new Color[4];
             _uv1 = new Vector2[4];
             _uv0 = new Vector2[4];
@@ -102,13 +109,18 @@ namespace Light2D
             RendererEnabled = _meshRenderer.enabled;
         }
 
+        protected virtual void Start()
+        {
+	        UpdateMeshData(true);
+        }
+
         private void OnWillRenderObject()
         {
             UpdateMeshData();
             //if (Application.isPlaying && LightingSystem.Instance.EnableNormalMapping)
             //{
             //    RendererEnabled = _meshRenderer.enabled;
-            //    _meshRenderer.enabled = false; 
+            //    _meshRenderer.enabled = false;
             //}
         }
 
@@ -142,7 +154,7 @@ namespace Light2D
 
             return matValue.Material;
         }
-        
+
         /// <summary>
         /// Getting material from cache or instantiating new one.
         /// </summary>
@@ -169,7 +181,7 @@ namespace Light2D
             {
                 matValue.UsageCount++;
             }
-            
+
             return matValue.Material;
         }
 
@@ -231,12 +243,12 @@ namespace Light2D
         {
             if (Sprite == null)
                 return;
-            
+
             var rect = Sprite.textureRect;
             var bounds = Sprite.bounds;
             var tex = Sprite.texture;
             var textureSize = new Point2(tex.width, tex.height);
-            
+
             // HACK: mipmap could cause texture padding sometimes so padded size of texture needs to be computed.
             var realSize =
 #if UNITY_EDITOR || UNITY_STANDALONE
