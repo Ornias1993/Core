@@ -35,12 +35,12 @@ namespace DatabaseAPI
 		private Firebase.Auth.FirebaseAuth auth;
 		public static Firebase.Auth.FirebaseAuth Auth => Instance.auth;
 		private Dictionary<string, Firebase.Auth.FirebaseUser> userByAuth = new Dictionary<string, Firebase.Auth.FirebaseUser>();
-		private Firebase.Auth.FirebaseUser user = null;
+		public Firebase.Auth.FirebaseUser user = null;
 		private bool fetchingToken = false;
 		public string token;
 		public string refreshToken;
 		public bool isFirstTime = false;
-		
+
 
 		void Start()
 		{

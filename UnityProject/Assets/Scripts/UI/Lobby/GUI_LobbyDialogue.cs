@@ -157,10 +157,11 @@ namespace Lobby
 		{
 			//Once created create user profile first
 			string userpath = "";
+			PlayerManager.CurrentUserProfile.id = ServerData.Instance.user.UserId;
 			PlayerManager.CurrentUserProfile.username = proposedName;
 			ServerData.ObjectUpdate(PlayerManager.CurrentUserProfile, userpath, NewUserProfileSuccess, NewUserProfileFailed);
-			
-			
+
+
 			//Prepare and show CharacterEditor for first character
 			pleaseWaitCreationText.text = "Created Successfully";
 			GameData.LoggedInUsername = chosenUsernameInput.text;

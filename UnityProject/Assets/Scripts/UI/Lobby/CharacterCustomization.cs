@@ -592,6 +592,7 @@ namespace Lobby
 	[Serializable]
 	public class UserProfile
 	{
+		public string id;
 		public string username;
 		public string role = "USER";
 	}
