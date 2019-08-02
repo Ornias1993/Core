@@ -68,6 +68,7 @@ public class ElectricalNodeControl : NetworkBehaviour
 			ResistanceRestorepoints.Remove(Connecting);
 		}
 	}
+
 	public void ObjectStateChange(ObjectState tState)
 	{
 		if (tState == ObjectState.InConstruction)
@@ -80,21 +81,16 @@ public class ElectricalNodeControl : NetworkBehaviour
 		UpObjectStateChange(tState);
 
 	}
-	/// <summary>
-	/// is the function to denote that it will be pooled or destroyed immediately after this function is finished, Used for cleaning up anything that needs to be cleaned up before this happens
-	/// </summary>
-	public void GoingOffStage() {
-
-	Node.FlushConnectionAndUp();
-	UpGoingOffStage();
-}
-
 
 
 	/// <summary>
 	/// is the function to denote that it will be pooled or destroyed immediately after this function is finished, Used for cleaning up anything that needs to be cleaned up before this happens
 	/// </summary>
 	public void GoingOffStage() {
+		Node.FlushConnectionAndUp();
+		UpGoingOffStage();
+	}
+
 	public void TurnOnSupply()
 	{
 		UpTurnOnSupply();
@@ -216,8 +212,6 @@ public class ElectricalNodeControl : NetworkBehaviour
 			}
 		}
 	}
-
-
 
 	public void UpOnStartServer()
 	{
@@ -389,4 +383,6 @@ public class ElectricalNodeControl : NetworkBehaviour
 		}
 		return (Current);
 	}
+
+
 }
