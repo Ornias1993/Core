@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class ElectricalDataCleanup { //To clean out data on cables and machines
-	public static void CleanConnectedDevices(ElectricalOIinheritance Thiswire){ 
+	public static void CleanConnectedDevices(ElectricalOIinheritance Thiswire){
 		//Logger.Log ("CleanConnectedDevices" + Thiswire, Category.Electrical);
 		foreach (KeyValuePair<ElectricalOIinheritance,HashSet<PowerTypeCategory>> IsConnectedTo in Thiswire.Data.ResistanceToConnectedDevices) {
 			IsConnectedTo.Key.connectedDevices.Remove (Thiswire);
@@ -32,7 +32,7 @@ public static class ElectricalDataCleanup { //To clean out data on cables and ma
 
 				foreach (ElectricalOIinheritance JumpTo in Backupconnections) {
 					JumpTo.FlushConnectionAndUp ();
-	
+
 				}
 				foreach (KeyValuePair<int, ElectronicSupplyData> Supply in Object.Data.SupplyDependent)
 				{
@@ -59,11 +59,13 @@ public static class ElectricalDataCleanup { //To clean out data on cables and ma
 		}
 
 		public static void FlushResistanceAndUp (ElectricalOIinheritance Object,  GameObject SourceInstance = null  ){
-			if (SourceInstance == null) {
-        bool pass = false;
-				foreach (var Supply in Object.Data.SupplyDependent) {
-					if (Supply.Value.ResistanceComingFrom.Count > 0) {
-						pass = true;
+			if (SourceInstance == null)
+			{
+				bool pass = false;
+				foreach (var Supply in Object.Data.SupplyDependent)
+				{
+					if (Supply.Value.ResistanceComingFrom.Count > 0)
+					{						pass = true;
 					}
 				}
 				if (pass) {
@@ -74,7 +76,7 @@ public static class ElectricalDataCleanup { //To clean out data on cables and ma
 						Supply.Value.CurrentGoingTo.Clear();
 						Supply.Value.CurrentComingFrom.Clear();
 						Supply.Value.SourceVoltages = 0;
-	
+
 					}
 					foreach (ElectricalOIinheritance JumpTo in Object.Data.connections)
 					{
@@ -147,7 +149,7 @@ public static class ElectricalDataCleanup { //To clean out data on cables and ma
 			}
 		}
 
-		public static void RemoveSupply(ElectricalOIinheritance Object,GameObject SourceInstance = null ){		
+		public static void RemoveSupply(ElectricalOIinheritance Object,GameObject SourceInstance = null ){
 			if (SourceInstance == null) {
 				bool pass = false;
 				foreach (var Supply in Object.Data.SupplyDependent)

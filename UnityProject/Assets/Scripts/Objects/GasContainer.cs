@@ -24,6 +24,7 @@ namespace Objects
 		public float Volume;
 		public float Temperature;
 		public float[] Gases = new float[Gas.Count];
+		public float ServerInternalPressure => GasMix.Pressure;
 
 		public override void OnStartServer()
 		{

@@ -42,7 +42,12 @@ public static class SpawnHandler
 		PlayerList.Instance.TryAddScores(playerScript.playerName);
 
 		equipment.SetPlayerLoadOuts();
-		SecurityRecordsManager.Instance.AddRecord(playerScript, jobType);
+
+		//Prevent syndicate and AI from getting a security record
+		if(jobType != JobType.SYNDICATE && jobType != JobType.AI)
+		{
+			SecurityRecordsManager.Instance.AddRecord(playerScript, jobType);
+		}
 	}
 
 	public static GameObject SpawnPlayerGhost(NetworkConnection conn, short playerControllerId, GameObject oldBody, CharacterSettings characterSettings)
