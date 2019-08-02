@@ -8,7 +8,7 @@ public static class ElectricityFunctions
 
 	public static HashSet<ElectricalOIinheritance> FindPossibleConnections(Vector2 searchVec, Matrix matrix, HashSet<PowerTypeCategory> CanConnectTo, ConnPoint ConnPoints, ElectricalOIinheritance OIinheritance )
 	{
-		
+
 		HashSet<ElectricalOIinheritance> connections = new HashSet<ElectricalOIinheritance>();
 		connections = SwitchCaseConnections(searchVec, matrix, CanConnectTo, ConnPoints.pointA, OIinheritance);
 		connections.UnionWith(SwitchCaseConnections(searchVec, matrix, CanConnectTo, ConnPoints.pointB, OIinheritance));
@@ -89,7 +89,7 @@ public static class ElectricityFunctions
 			if (OIinheritance != con)
 			{
 				if ((OIinheritance.WireEndA == con.WireEndA && OIinheritance.WireEndB == con.WireEndB) ||
-					(OIinheritance.WireEndA == con.WireEndB && OIinheritance.WireEndB == con.WireEndA)) { 
+					(OIinheritance.WireEndA == con.WireEndB && OIinheritance.WireEndB == con.WireEndA)) {
 					Logger.LogErrorFormat("{0} < duplicate Please remove {1}", Category.Electrical, PositionE, OIinheritance.InData.Categorytype);
 				}
 
@@ -174,12 +174,13 @@ public static class ElectricityFunctions
 		}
 		return (Current);
 	}
+	public static Dictionary<ElectricalOIinheritance, float> AnInterestingDictionary = new Dictionary<ElectricalOIinheritance, float>();
 
 	public static (float, float, float) WorkOutActualNumbers(ElectricalOIinheritance ElectricItem)
 	{  //Sometimes gives wrong readings at junctions, Needs to be looked into
 		float Current = 0; //Calculates the actual voltage and current flowing through the Node
 		float Voltage = 0;
-		Dictionary<ElectricalOIinheritance, float> AnInterestingDictionary = new Dictionary<ElectricalOIinheritance, float>();
+		AnInterestingDictionary.Clear();
 		foreach (var Supply in ElectricItem.Data.SupplyDependent) //Voltages easy to work out just add up all the voltages from different sources
 		{
 			Voltage += Supply.Value.SourceVoltages;
@@ -210,7 +211,7 @@ public static class ElectricityFunctions
 		}
 
 		foreach (var CurrentItem in AnInterestingDictionary)
-		{ 
+		{
 			if (CurrentItem.Value > 0)
 			{
 				Current += CurrentItem.Value;
@@ -225,9 +226,9 @@ public static class ElectricityFunctions
 	}
 
 	public static float WorkOutVoltage(ElectricalOIinheritance ElectricItem)
-	{  
+	{
 		float Voltage = 0;
-		foreach (var Supply in ElectricItem.Data.SupplyDependent) 
+		foreach (var Supply in ElectricItem.Data.SupplyDependent)
 		{
 			Voltage += Supply.Value.SourceVoltages;
 		}
@@ -249,7 +250,7 @@ public static class ElectricityFunctions
 
 				}
 			}
-			if (!pass) { 
+			if (!pass) {
 				foreach (var subcheck in Supply.Value.Downstream)
 				{
 					if (subcheck.InData.Categorytype == SpecifiedDevice)
@@ -303,7 +304,7 @@ public static class ElectricityFunctions
 
 				}
 			}
-			if (!pass) { 
+			if (!pass) {
 				foreach (var subcheck in Supply.Value.Downstream)
 				{
 					if (SpecifiedDevices.Contains(subcheck.InData.Categorytype))

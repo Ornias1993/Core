@@ -347,12 +347,14 @@ public class PoolManager : NetworkBehaviour
 		if (poolPrefabTracker != null && objBehavior != null)
 		{
 			//pooled
+			target.BroadcastMessage("GoingOffStage", SendMessageOptions.DontRequireReceiver);
 			Instance.AddToPool(target);
 			objBehavior.visibleState = false;
 		}
 		else
 		{
 			//not pooled
+			target.BroadcastMessage("GoingOffStage", SendMessageOptions.DontRequireReceiver);
 			NetworkServer.Destroy(target);
 		}
 
