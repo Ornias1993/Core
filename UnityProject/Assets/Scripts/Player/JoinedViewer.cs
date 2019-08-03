@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using DatabaseAPI;
 using Steamworks;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -22,30 +23,26 @@ public class JoinedViewer : NetworkBehaviour
 		base.OnStartLocalPlayer();
 
 		// Send steamId to server for player setup.
-		if (BuildPreferences.isSteamServer)
-		{
-			CmdServerSetupPlayer(SteamClient.SteamId);
-		}
-		else
-		{
-			CmdServerSetupPlayer(0);
-		}
+		CmdServerSetupPlayer(PlayerManager.CurrentUserProfile.id);
+Logger.Log("Used ID for start: " + PlayerManager.CurrentUserProfile.id);
 	}
 
+	/// <summary>
+	/// Sends a userdata to the server to add to playerlist
+	/// </summary>
 	[Command]
-	private void CmdServerSetupPlayer(ulong steamId)
+	private void CmdServerSetupPlayer(string firebaseId)
 	{
 		//Add player to player list
 		PlayerList.Instance.Add(new ConnectedPlayer
 		{
 			Connection = connectionToClient,
 			GameObject = gameObject,
-			Job = JobType.NULL,
-			SteamId = steamId
+			Job = JobType.NULL
 		});
 
 		// If they have a player to rejoin send the client the player to rejoin, otherwise send a null gameobject.
-		TargetLocalPlayerSetupPlayer(connectionToClient, PlayerList.Instance.TakeLoggedOffPlayer(steamId));
+		TargetLocalPlayerSetupPlayer(connectionToClient, PlayerList.Instance.TakeLoggedOffPlayer(firebaseId));
 	}
 
 	[TargetRpc]
@@ -54,11 +51,9 @@ public class JoinedViewer : NetworkBehaviour
 		PlayerManager.SetViewerForControl(this);
 		UIManager.ResetAllUI();
 
-		if (BuildPreferences.isSteamServer)
-		{
 			//Send request to be authenticated by the server
 			StartCoroutine(WaitUntilServerInit());
-		}
+
 
 		// If player is joining for the first time let them pick faction and job, otherwise rejoin character.
 		if (loggedOffPlayer == null)
@@ -77,18 +72,31 @@ public class JoinedViewer : NetworkBehaviour
 	IEnumerator WaitUntilServerInit()
 	{
 		yield return WaitFor.EndOfFrame;
-		if(SteamClient.IsValid)
+		if (BuildPreferences.isSteamServer)
 		{
-			Logger.Log("Client Requesting Auth", Category.Steam);
-			// Generate authentication Ticket
-			var ticket = SteamUser.GetAuthSessionTicket();
-			var ticketBinary = ticket.Data;
-			// Send Clientmessage to authenticate
-			RequestAuthMessage.Send(SteamClient.SteamId, ticketBinary);
+			if (SteamClient.IsValid)
+			{
+				Logger.Log("Steam Client Requesting Auth", Category.Steam);
+				// Generate authentication Ticket
+				var ticket = SteamUser.GetAuthSessionTicket();
+				var ticketBinary = ticket.Data;
+				// Send Clientmessage to authenticate
+				RequestSteamAuthMessage.Send(SteamClient.SteamId, ticketBinary);
+			}
+			else
+			{
+				Logger.Log("{Steam Auth request Failed", Category.Steam);
+			}
+		}
+
+		if (!string.IsNullOrEmpty(ServerData.Instance.token))
+		{
+			Logger.Log("Firebase Client Requesting Auth");
+			RequestFirebaseAuthMessage.Send(ServerData.Instance.token);
 		}
 		else
 		{
-			Logger.Log("Auth request Failed", Category.Steam);
+			Logger.Log("Firebase Auth request failed");
 		}
 	}
 

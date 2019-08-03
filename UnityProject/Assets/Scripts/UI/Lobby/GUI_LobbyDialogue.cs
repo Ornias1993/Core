@@ -33,6 +33,7 @@ namespace Lobby
 		//Account login:
 		public GameObject loginNextButton;
 		public GameObject loginGoBackButton;
+		public int logginAttempts;
 
 		public InputField serverAddressInput;
 		public InputField serverPortInput;
@@ -41,6 +42,7 @@ namespace Lobby
 		public Text loggingInText;
 		public Toggle hostServerToggle;
 		public Toggle autoLoginToggle;
+
 
 		private CustomNetworkManager networkManager;
 
@@ -65,7 +67,12 @@ namespace Lobby
 			// Init Lobby UI
 			InitPlayerName();
 
-			if (ServerData.Auth.CurrentUser != null)
+			while (ServerData.Auth == null )
+			{
+
+			}
+
+			if (!string.IsNullOrEmpty(ServerData.Auth.CurrentUser.UserId))
 			{
 				ShowConnectionPanel();
 			}
@@ -77,6 +84,7 @@ namespace Lobby
 
 		public void ShowLoginScreen()
 		{
+
 			HideAllPanels();
 			accountLoginPanel.SetActive(true);
 			dialogueTitle.text = "Account Login";
@@ -100,18 +108,24 @@ namespace Lobby
 		public void ShowConnectionPanel()
 		{
 			HideAllPanels();
-			if (ServerData.Auth.CurrentUser != null)
-			{
-				connectionPanel.SetActive(true);
-				dialogueTitle.text = "Connection Panel";
-
-				StartCoroutine(WaitForReloadProfile());
-			}
-			else
+			while (ServerData.Auth.CurrentUser == null)
 			{
 				loggingInPanel.SetActive(true);
 				dialogueTitle.text = "Please Wait..";
 			}
+
+			if (string.IsNullOrEmpty(PlayerManager.CurrentUserProfile.id))
+			{
+				Logger.Log("ERROR");
+				//OnLogout();
+			}
+
+			connectionPanel.SetActive(true);
+				dialogueTitle.text = "Connection Panel";
+
+				StartCoroutine(WaitForReloadProfile());
+
+
 		}
 
 
@@ -119,7 +133,9 @@ namespace Lobby
 		//TODO maybe use username from profile instead?
 		IEnumerator WaitForReloadProfile()
 		{
+
 			ServerData.ReloadProfile();
+
 
 			float timeOutLimit = 60f;
 			float timeOutCount = 0f;
@@ -138,11 +154,15 @@ namespace Lobby
 			{
 				dialogueTitle.text = "Logged in: " + ServerData.Auth.CurrentUser.DisplayName;
 			}
+
+
 		}
+
+
+
 
 		public void CreationNextButton()
 		{
-			PlayerPrefs.SetString ("charactersettings", "");
 			SoundManager.Play("Click01");
 			HideAllPanels();
 			pendingCreationPanel.SetActive(true);
@@ -211,30 +231,33 @@ namespace Lobby
 		{
 			SoundManager.Play("Click01");
 			HideAllPanels();
-			ServerData.Auth.SignOut();
-			PlayerPrefs.SetString("username", "");
-			PlayerPrefs.SetString("cookie", "");
-			PlayerPrefs.SetInt("autoLogin", 0);
-			PlayerPrefs.Save();
+			ServerData.Instance.OnLogOut();
 			ShowLoginScreen();
 		}
 
-		private void LoginSuccess(CharacterSettings characterSettings)
+		private void LoginSuccess(string msg)
 		{
+			logginAttempts = 0;
 			//Put character for current logged in user into playerprefs and playermanager
 			//TODO Show character editor if no character is recieved but loggin succeded
 			loggingInText.text = "Login Success..";
-			string json = JsonUtility.ToJson(characterSettings);
-			PlayerPrefs.SetString("currentcharacter", json);
-			PlayerManager.CurrentCharacterSettings = characterSettings;
+
 			ShowConnectionPanel();
 		}
 
 		private void LoginError(string msg)
 		{
-			ServerData.Auth.SignOut(); //just in case
+			logginAttempts++;
+			if(logginAttempts > 3)
+			{
+				ServerData.Instance.OnLogOut(); //Just in case
 			loggingInText.text = "Login failed:" + msg;
 			loginGoBackButton.SetActive(true);
+			}
+			else
+			{
+				PerformLogin();
+			}
 		}
 
 		public void OnHostToggle()

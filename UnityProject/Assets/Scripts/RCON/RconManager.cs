@@ -340,6 +340,8 @@ public class Players
 			{
 				playerName = player.Name,
 					steamID = player.SteamId,
+					FirebaseID = player.FirebaseId,
+					Role = player.Role,
 					job = player.Job.ToString()
 			};
 			players.Add(playerEntry);
@@ -352,5 +354,7 @@ public class PlayerDetails
 {
 	public string playerName;
 	public ulong steamID;
+	public string FirebaseID;
+	public string Role;
 	public string job;
 }

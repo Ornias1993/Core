@@ -31,7 +31,7 @@ namespace DatabaseAPI
 			}
 		}
 
-		private const string FirebaseRoot = "https://firestore.googleapis.com/v1/projects/expedition13/databases/(default)/documents";
+		public const string FirebaseRoot = "https://firestore.googleapis.com/v1/projects/expedition13/databases/(default)/documents";
 		private Firebase.Auth.FirebaseAuth auth;
 		public static Firebase.Auth.FirebaseAuth Auth => Instance.auth;
 		private Dictionary<string, Firebase.Auth.FirebaseUser> userByAuth = new Dictionary<string, Firebase.Auth.FirebaseUser>();
@@ -42,7 +42,7 @@ namespace DatabaseAPI
 		public bool isFirstTime = false;
 
 
-		void Start()
+		void Awake()
 		{
 			InitializeFirebase();
 		}
@@ -58,6 +58,7 @@ namespace DatabaseAPI
 
 		void OnEnable()
 		{
+			PeriodicKeyUpdate();
 			EventManager.AddHandler(EVENT.LoggedOut, OnLogOut);
 		}
 
@@ -92,7 +93,6 @@ namespace DatabaseAPI
 				if (!signedIn && user != null)
 				{
 					Logger.Log("Signed out ", Category.DatabaseAPI);
-					PlayerPrefs.DeleteKey ("charactersettings");
 				}
 				user = senderAuth.CurrentUser;
 				userByAuth[senderAuth.App.Name] = user;
@@ -100,13 +100,16 @@ namespace DatabaseAPI
 				{
 					Logger.Log("Signed In ", Category.DatabaseAPI);
 					//TODO: Display name stuff
-					/* 
+					/*
 					displayName = user.DisplayName ?? "";
 					DisplayDetailedUserInfo(user, 1);
 					*/
 				}
 			}
 		}
+
+
+
 
 		// Track ID token changes.
 		void IdTokenChanged(object sender, System.EventArgs eventArgs)
@@ -121,6 +124,7 @@ namespace DatabaseAPI
 
 		void SetToken(string result)
 		{
+
 			if (string.IsNullOrEmpty(token))
 			{
 				Instance.token = result;
@@ -138,6 +142,27 @@ namespace DatabaseAPI
 				string charpath = "/characters/1";
 				ObjectUpdate(PlayerManager.CurrentCharacterSettings, charpath, NewCharacterSuccess, NewCharacterFailed);
 			}
+			else
+			{
+				if (!string.IsNullOrEmpty(Instance.refreshToken))
+				{
+
+					Logger.Log("Token is: " + Instance.refreshToken);
+					if (string.IsNullOrEmpty(PlayerManager.CurrentUserProfile.id))
+					{
+						Instance.StartCoroutine(GetUserProfile(user.UserId, GetSuccess, GetFailed));
+					}
+
+					if (string.IsNullOrEmpty(PlayerManager.CurrentCharacterSettings.Name) ||
+					    PlayerManager.CurrentCharacterSettings.Name == "Cuban Pete")
+					{
+						Instance.StartCoroutine(GetCharacterSettings(user.UserId, GetSuccess, GetFailed));
+					}
+				}
+			}
+
+
+
 		}
 
 		// Series of blackhole hooks to dump results of database interaction into
@@ -152,10 +177,11 @@ namespace DatabaseAPI
 			auth.SignOut();
 			token = "";
 			refreshToken = "";
+			PlayerManager.CurrentUserProfile = new UserProfile();
+			PlayerManager.CurrentCharacterSettings = new CharacterSettings();
 			PlayerPrefs.SetString("username", "");
 			PlayerPrefs.SetString("cookie", "");
 			PlayerPrefs.SetString("userprofile", "");
-			PlayerPrefs.SetString ("charactersettings", "");
 			PlayerPrefs.SetInt("autoLogin", 0);
 			PlayerPrefs.Save();
 		}

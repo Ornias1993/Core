@@ -230,8 +230,6 @@ namespace Lobby
 			//Send update request for character.
 			string path = "/characters/1";
 			ServerData.ObjectUpdate(currentCharacter, path, SaveDataSuccess, SaveDataError);
-			PlayerPrefs.SetString("currentcharacter", JsonUtility.ToJson(currentCharacter));
-			PlayerPrefs.Save();
 		}
 
 		public void SaveDataError(string msg)

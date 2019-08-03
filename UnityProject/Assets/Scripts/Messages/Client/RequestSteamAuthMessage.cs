@@ -3,10 +3,14 @@ using UnityEngine.Networking;
 using Steamworks;
 using Steamworks.Data;
 
-
-public class RequestAuthMessage : ClientMessage
+/// <summary>
+/// This message checks if the steam ID send by player, is the same as the ticket they get from steam
+/// basically it authenticates the steamID
+/// Not sending a steamID would (prob) not lead to kicking, but if a user sends a steam ID it should be verified.
+/// </summary>
+public class RequestSteamAuthMessage : ClientMessage
 {
-	public static short MessageType = (short) MessageTypes.RequestAuthMessage;
+	public static short MessageType = (short) MessageTypes.RequestSteamAuthMessage;
 	public ulong SteamID;
 	public byte[] TicketBinary;
 
@@ -27,7 +31,7 @@ public class RequestAuthMessage : ClientMessage
 			Logger.Log( $"Player whitelisted: {SentByPlayer}", Category.Steam);
 			yield break;
 		}
-		
+
 		Logger.Log("Server Starting Auth for User: " + SteamID, Category.Steam);
 		if (SteamServer.IsValid && SteamID != 0 && TicketBinary != null)
 		{
@@ -38,8 +42,8 @@ public class RequestAuthMessage : ClientMessage
 				// This can trigger for a lot of reasons
 				// More info: http://projectzomboid.com/modding//net/puppygames/steam/BeginAuthSessionResult.html
 				// if triggered does prevent the authchange callback.
-				Logger.Log("Start Session returned false, kicking", Category.Steam);
-				CustomNetworkManager.Kick( SentByPlayer, "Steam auth failed" );
+				Logger.Log("Start Session returned false, Not registering steamID", Category.Steam);
+
 			}
 			else
 			{
@@ -50,9 +54,9 @@ public class RequestAuthMessage : ClientMessage
 
 	}
 
-	public static RequestAuthMessage Send(ulong steamid, byte[] ticketBinary)
+	public static RequestSteamAuthMessage Send(ulong steamid, byte[] ticketBinary)
 	{
-		RequestAuthMessage msg = new RequestAuthMessage
+		RequestSteamAuthMessage msg = new RequestSteamAuthMessage
 		{
 			SteamID = steamid,
 			TicketBinary = ticketBinary

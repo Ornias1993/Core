@@ -7,6 +7,8 @@ public class ConnectedPlayer
     private string name;
     private JobType job;
     private ulong steamId;
+    private string firebaseId;
+    private string role;
     private GameObject gameObject;
     private PlayerScript playerScript;
     private NetworkConnection connection;
@@ -16,15 +18,15 @@ public class ConnectedPlayer
 	//Name that is used if the client's character name is empty
 	private const string DEFAULT_NAME = "Anonymous Spessman";
 
-	public bool IsAuthenticated => steamId != 0;
-
-    public static readonly ConnectedPlayer Invalid = new ConnectedPlayer
+	public static readonly ConnectedPlayer Invalid = new ConnectedPlayer
     {
         connection = new NetworkConnection(),
         gameObject = null,
         name = "kek",
         job = JobType.NULL,
         steamId = 0,
+        firebaseId = "",
+        role = "",
         synced = true
     };
 
@@ -36,7 +38,9 @@ public class ConnectedPlayer
             gameObject = player.GameObject,
             name = player.Name,
             job = player.Job,
-            steamId = player.SteamId,
+            steamId = 0,
+            firebaseId = "",
+            role = "",
             synced = player.synced
         };
     }
@@ -85,6 +89,32 @@ public class ConnectedPlayer
 				Logger.Log( $"Updated steamID! {this}" , Category.Steam);
             }
         }
+    }
+
+    public string FirebaseId
+    {
+	    get { return firebaseId; }
+	    set
+	    {
+		    if (!string.IsNullOrEmpty(value))
+		    {
+			    firebaseId = value;
+			    Logger.Log( $"Updated FirebaseId! {this}" , Category.DatabaseAPI);
+		    }
+	    }
+    }
+
+    public string Role
+    {
+	    get { return role; }
+	    set
+	    {
+		    if (!string.IsNullOrEmpty(value))
+		    {
+			    role = value;
+			    Logger.Log( $"Updated Role! {this}" , Category.DatabaseAPI);
+		    }
+	    }
     }
 
     public JobType Job
@@ -185,6 +215,6 @@ public class ConnectedPlayer
 
     public override string ToString()
     {
-        return $"[conn={Connection.connectionId}|go={gameObject}|name='{name}'|job={job}|steamId={steamId}|synced={synced}]";
+        return $"[conn={Connection.connectionId}|go={gameObject}|name='{name}'|job={job}|steamId={steamId}|firebaseId={firebaseId}|role={role}|synced={synced}]";
     }
 }

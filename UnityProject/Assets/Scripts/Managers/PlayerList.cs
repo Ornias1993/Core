@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Experimental.PlayerLoop;
 using UnityEngine.Networking;
 
 /// Comfy place to get players and their info (preferably via their connection)
@@ -50,6 +51,9 @@ public class PlayerList : NetworkBehaviour
 			Destroy(gameObject);
 		}
 	}
+
+
+
 
 	/// Allowing players to sync after round restart
 	public void ResetSyncedState() {
@@ -235,15 +239,18 @@ public class PlayerList : NetworkBehaviour
 			existingPlayer.Name = player.Name; //Note that name won't be changed to empties/nulls
 			existingPlayer.Job = player.Job;
 			existingPlayer.SteamId = player.SteamId;
+			existingPlayer.FirebaseId = player.FirebaseId;
+			existingPlayer.Role = player.Role;
 		}
 		else
 		{
 			values.Add(player);
 			Logger.LogFormat("Added {0}. Total:{1}; {2}", Category.Connections, player, values.Count, string.Join(";", values));
 			//Adding kick timer for new players only
-			StartCoroutine(KickTimer(player));
+
 		}
 		CheckRcon();
+		StartCoroutine(KickTimer(player));
 	}
 
 	private IEnumerator KickTimer(ConnectedPlayer player)
@@ -254,7 +261,7 @@ public class PlayerList : NetworkBehaviour
 			yield break;
 		}
 		int tries = 10; // 10 second wait, just incase of slow loading on lower end machines
-		while (!player.IsAuthenticated)
+		while (string.IsNullOrEmpty(player.Role))
 		{
 			if (tries-- < 0)
 			{
@@ -311,12 +318,6 @@ public class PlayerList : NetworkBehaviour
 	}
 
 	[Server]
-	public ConnectedPlayer Get(string byName, bool lookupOld = false)
-	{
-		return getInternal(player => player.Name == byName, lookupOld);
-	}
-
-	[Server]
 	public ConnectedPlayer Get(GameObject byGameObject, bool lookupOld = false)
 	{
 		return getInternal(player => player.GameObject == byGameObject, lookupOld);
@@ -326,6 +327,12 @@ public class PlayerList : NetworkBehaviour
 	public ConnectedPlayer Get(ulong bySteamId, bool lookupOld = false)
 	{
 		return getInternal(player => player.SteamId == bySteamId, lookupOld);
+	}
+
+	[Server]
+	public ConnectedPlayer Get(string byFirebaseId, bool lookupOld = false)
+	{
+		return getInternal(player => player.FirebaseId == byFirebaseId, lookupOld);
 	}
 
 	private ConnectedPlayer getInternal(Func<ConnectedPlayer,bool> condition, bool lookupOld = false)
@@ -366,19 +373,20 @@ public class PlayerList : NetworkBehaviour
 		}
 	}
 
+
 	[Server]
-	private void CheckRcon(){
+	public void CheckRcon(){
 		if(RconManager.Instance != null){
 			RconManager.UpdatePlayerListRcon();
 		}
 	}
 
 	[Server]
-	public GameObject TakeLoggedOffPlayer(ulong steamId)
+	public GameObject TakeLoggedOffPlayer(string firebaseId)
 	{
 		foreach (var player in loggedOff)
 		{
-			if (player.SteamId == steamId)
+			if (player.FirebaseId == firebaseId)
 			{
 				loggedOff.Remove(player);
 				return player.GameObject;

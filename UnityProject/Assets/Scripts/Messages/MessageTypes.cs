@@ -45,7 +45,7 @@ internal enum MessageTypes : short
 	BookNetMessage = 1041,
 	BookshelfNetMessage = 1042,
 	SubBookshelfNetMessage = 1043,
-	
+
 	//Client messages - 2xxx
 	UpdateHeadsetKeyMessage = 2000,
 	InteractMessage = 2001,
@@ -54,7 +54,7 @@ internal enum MessageTypes : short
 	OpenPageValueNetMessage = 2004,
 	SimpleInteractMessage = 2005,
 	RequestSyncMessage = 2006,
-	RequestAuthMessage = 2007,
+	RequestSteamAuthMessage = 2007,
 	RequestMoveMessage = 2008,
 	RequestShootMessage = 2009,
 	TabInteractMessage = 2010,
@@ -76,4 +76,5 @@ internal enum MessageTypes : short
 	RequestBookshelfNetMessage = 2027,
 	RequestOpenBookIDNetMessage = 2028,
 	RequestUncuffMessage = 2029,
+	RequestFirebaseAuthMessage = 2030,
 }
