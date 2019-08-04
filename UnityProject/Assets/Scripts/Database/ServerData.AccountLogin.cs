@@ -9,7 +9,7 @@ namespace DatabaseAPI
 	public partial class ServerData
 	{
 		///<summary>
-		///Tries to log user into firebase and grab all userdata from the DB
+		///Try to log user into firebase
 		///</summary>
 
 		// This processes the login credentials you enter
@@ -30,14 +30,15 @@ namespace DatabaseAPI
 			Instance.StartCoroutine(MonitorLogin(successCallBack, failedCallBack, status));
 		}
 
-		// executes till it reaches the point of sending a callback to AttemptLogin
+		///<summary>
+		///Wait for UserProfile and CharacterSettings to download
+		/// Timeout if not recieved in time or on login error
+		///</summary>
 		static IEnumerator MonitorLogin(Action<string> successCallBack, Action<string> failedCallBack, Status status)
 		{
 			float timeOutTime = 8f;
 			float timeOutCount = 0f;
 
-			Logger.Log("charname at login" + PlayerManager.CurrentCharacterSettings.Name);
-			Logger.Log("Userid at login" + PlayerManager.CurrentUserProfile.id);
 
 			while (string.IsNullOrEmpty(PlayerManager.CurrentUserProfile.id) || PlayerManager.CurrentCharacterSettings.Name == "Cuban Pete")
 			{
@@ -50,7 +51,10 @@ namespace DatabaseAPI
 						Logger.Log("Log in timed out", Category.DatabaseAPI);
 					}
 
-					failedCallBack.Invoke("Check your username and password." + status.error);
+					//TODO maybe throw in a log entry with the status?
+					//Though it is mostly just "false" now that downloading credentials is moved.
+
+					failedCallBack.Invoke("Check your username and password." );
 					yield break;
 				}
 

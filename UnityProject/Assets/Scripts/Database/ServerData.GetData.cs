@@ -6,15 +6,18 @@ using E7.Firebase;
 
 namespace DatabaseAPI
 {
+	/// <summary>
+	/// Currently processes the UserID and CharacterSettings retrieval from the server
+	/// TODO In the future this should be replaced by a more general solution in line with ServerData.UpdateData
+	/// </summary>
 	public partial class ServerData
 	{
 
-		// executes till it reaches the point of sending a callback to AttemptLogin
+		/// <summary>
+		/// GETs a userprofile based on the userID it recieves using the firebase REST api and E7.firebase
+		/// </summary>
 		static IEnumerator GetUserProfile(string UserId, Action<string> successCallBack, Action<string> failedCallBack)
 		{
-
-
-
 			// Once logged in, this gets triggered
 			//Send a request to GET all data for the UserProfile
 			var url1 = FirebaseRoot + $"/users/{UserId}";
@@ -31,10 +34,7 @@ namespace DatabaseAPI
 			{
 				// Processes the character into an actual userprofile object
 				var snapshot = new FirestormDocumentSnapshot(r1.downloadHandler.text);
-				Logger.Log("User profile string: " + r1.downloadHandler.text);
 				UserProfile userprofile = snapshot.ConvertTo<UserProfile>();
-
-				Logger.Log("Userprofile recieved: " + userprofile.username, Category.DatabaseAPI);
 				PlayerManager.CurrentUserProfile = userprofile;
 				successCallBack.Invoke("Received Profile for user " + UserId);
 			}
@@ -42,9 +42,11 @@ namespace DatabaseAPI
 		}
 
 
+		/// <summary>
+		/// GETs the character settings for a user, based on the userID it recieves using the firebase REST api and E7.firebase
+		/// </summary>
 		static IEnumerator GetCharacterSettings(string UserId, Action<string> successCallBack, Action<string> failedCallBack)
 		{
-
 			//Send a request to GET all data for a certain (default) character
 				var url2 = FirebaseRoot + $"/users/{UserId}/characters/1";
 				UnityWebRequest r2 = UnityWebRequest.Get(url2);
@@ -64,7 +66,9 @@ namespace DatabaseAPI
 					successCallBack.Invoke("Received Character for user " + UserId);
 				}
 			}
-
+		/// <summary>
+		/// Handles the success and failure logging of above GET functions
+		/// </summary>
 		void GetSuccess(string msg)
 		{
 			Logger.Log("GET Success: " + msg, Category.DatabaseAPI);

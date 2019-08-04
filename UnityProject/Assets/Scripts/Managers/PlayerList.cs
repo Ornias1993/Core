@@ -223,6 +223,10 @@ public class PlayerList : NetworkBehaviour
 			return list;
 		});
 
+	/// <summary>
+	/// Processes the request from the player to be added to the playerlist
+	/// Be aware SteamID, Role and FirebaseID are added after authentication
+	/// </summary>
 	[Server]
 	private void TryAdd(ConnectedPlayer player)
 	{
@@ -238,9 +242,6 @@ public class PlayerList : NetworkBehaviour
 			existingPlayer.GameObject = player.GameObject;
 			existingPlayer.Name = player.Name; //Note that name won't be changed to empties/nulls
 			existingPlayer.Job = player.Job;
-			existingPlayer.SteamId = player.SteamId;
-			existingPlayer.FirebaseId = player.FirebaseId;
-			existingPlayer.Role = player.Role;
 		}
 		else
 		{
@@ -253,6 +254,9 @@ public class PlayerList : NetworkBehaviour
 		StartCoroutine(KickTimer(player));
 	}
 
+	/// <summary>
+	/// If a player is not authenticated, their role is not set and they should be removed after a timer runs out
+	/// </summary>
 	private IEnumerator KickTimer(ConnectedPlayer player)
 	{
 		if ( IsConnWhitelisted( player ) || !BuildPreferences.isForRelease )
@@ -293,6 +297,8 @@ public class PlayerList : NetworkBehaviour
 	[Server]
 	public void Add(ConnectedPlayer player) => TryAdd(player);
 
+
+
 	[Server]
 	public bool ContainsConnection(NetworkConnection connection)
 	{
@@ -311,30 +317,45 @@ public class PlayerList : NetworkBehaviour
 		return !Get(gameObject).Equals(ConnectedPlayer.Invalid);
 	}
 
+	/// <summary>
+	/// Gets a connectedplayer based on its connection
+	/// </summary>
 	[Server]
 	public ConnectedPlayer Get(NetworkConnection byConnection, bool lookupOld = false)
 	{
 		return getInternal(player => player.Connection == byConnection, lookupOld);
 	}
 
+	/// <summary>
+	/// Gets a connectedplayer based on its GameObject
+	/// </summary>
 	[Server]
 	public ConnectedPlayer Get(GameObject byGameObject, bool lookupOld = false)
 	{
 		return getInternal(player => player.GameObject == byGameObject, lookupOld);
 	}
 
+	/// <summary>
+	/// Gets a connectedplayer based on its SteamId
+	/// </summary>
 	[Server]
 	public ConnectedPlayer Get(ulong bySteamId, bool lookupOld = false)
 	{
 		return getInternal(player => player.SteamId == bySteamId, lookupOld);
 	}
 
+	/// <summary>
+	/// Gets a connectedplayer based on its FireBaseID
+	/// </summary>
 	[Server]
 	public ConnectedPlayer Get(string byFirebaseId, bool lookupOld = false)
 	{
 		return getInternal(player => player.FirebaseId == byFirebaseId, lookupOld);
 	}
 
+	/// <summary>
+	/// Process above requiests to get a Connected player based on value
+	/// </summary>
 	private ConnectedPlayer getInternal(Func<ConnectedPlayer,bool> condition, bool lookupOld = false)
 	{
 		for ( var i = 0; i < values.Count; i++ )

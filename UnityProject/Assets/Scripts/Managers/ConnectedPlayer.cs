@@ -18,6 +18,9 @@ public class ConnectedPlayer
 	//Name that is used if the client's character name is empty
 	private const string DEFAULT_NAME = "Anonymous Spessman";
 
+/// <summary>
+/// Defayult Connected player
+/// </summary>
 	public static readonly ConnectedPlayer Invalid = new ConnectedPlayer
     {
         connection = new NetworkConnection(),
@@ -30,6 +33,7 @@ public class ConnectedPlayer
         synced = true
     };
 
+	//TODO check if firebaseid has to be saved on archive
     public static ConnectedPlayer ArchivedPlayer( ConnectedPlayer player )
     {
         return new ConnectedPlayer
@@ -39,7 +43,7 @@ public class ConnectedPlayer
             name = player.Name,
             job = player.Job,
             steamId = 0,
-            firebaseId = "",
+            firebaseId = player.FirebaseId,
             role = "",
             synced = player.synced
         };
@@ -68,6 +72,10 @@ public class ConnectedPlayer
         }
     }
 
+    /// <summary>
+    /// Response on setting and getting the player Name
+    /// </summary>
+    // TODO maybe this needs a rename, guess this is not the username, nor the displayname, nor the playername, just the character name?
     public string Name
     {
         get { return name; }
@@ -78,6 +86,9 @@ public class ConnectedPlayer
         }
     }
 
+    /// <summary>
+    /// Response on setting and getting the player SteamId
+    /// </summary>
     public ulong SteamId
     {
         get { return steamId; }
@@ -91,6 +102,9 @@ public class ConnectedPlayer
         }
     }
 
+    /// <summary>
+    /// Response on setting and getting the player FirebaseId
+    /// </summary>
     public string FirebaseId
     {
 	    get { return firebaseId; }
@@ -104,6 +118,9 @@ public class ConnectedPlayer
 	    }
     }
 
+    /// <summary>
+    /// Response on setting and getting the player Role
+    /// </summary>
     public string Role
     {
 	    get { return role; }
@@ -117,6 +134,9 @@ public class ConnectedPlayer
 	    }
     }
 
+    /// <summary>
+    /// Response on setting and getting the player Job
+    /// </summary>
     public JobType Job
     {
         get { return job; }

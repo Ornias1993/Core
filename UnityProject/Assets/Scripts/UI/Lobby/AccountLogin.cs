@@ -27,7 +27,9 @@ namespace Lobby
 			}
 		}
 
-		// Gets triggered by the GUI, grabs Login details from the AccountLoggin script and send it to the actual login script
+		/// <summary>
+		/// Gets triggered by the GUI, grabs Login details from the AccountLoggin script and send it to the actual login script
+		/// </summary>
 		public void TryLogin(Action<string> successAction, Action<string> errorAction)
 		{
 			ServerData.AttemptLogin(userNameInput.text, passwordInput.text,

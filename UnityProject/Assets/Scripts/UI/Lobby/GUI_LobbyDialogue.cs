@@ -67,11 +67,14 @@ namespace Lobby
 			// Init Lobby UI
 			InitPlayerName();
 
+			//TODO determine if this has any effect in limiting NRE's
 			while (ServerData.Auth == null )
 			{
 
 			}
 
+			//TODO asking if this is null keeps giving NRE
+			//TODO asking if ServerData.Auth.CurrentUser is null also keeps giving NRE's
 			if (!string.IsNullOrEmpty(ServerData.Auth.CurrentUser.UserId))
 			{
 				ShowConnectionPanel();
@@ -114,12 +117,6 @@ namespace Lobby
 				dialogueTitle.text = "Please Wait..";
 			}
 
-			if (string.IsNullOrEmpty(PlayerManager.CurrentUserProfile.id))
-			{
-				Logger.Log("ERROR");
-				//OnLogout();
-			}
-
 			connectionPanel.SetActive(true);
 				dialogueTitle.text = "Connection Panel";
 
@@ -160,7 +157,10 @@ namespace Lobby
 
 
 
-
+/// <summary>
+/// Initiates basic account creation (NOT character creation!)
+/// </summary>
+//TODO Doesnt seem to handle wrongly formated emailadresses right
 		public void CreationNextButton()
 		{
 			SoundManager.Play("Click01");
@@ -173,6 +173,10 @@ namespace Lobby
 				emailAddressInput.text, AccountCreationSuccess, AccountCreationError);
 		}
 
+/// <summary>
+/// If firebase account is created, create userprofile
+/// After show the character creator
+/// </summary>
 		private void AccountCreationSuccess(string proposedName)
 		{
 			//Once created create user profile first
@@ -194,13 +198,18 @@ namespace Lobby
 			emailAddressInput.text = "";
 		}
 
-		//TODO Doesnt seem to handle wrongly formated emailadresses right
+/// <summary>
+/// Show error window on account creation error
+/// </summary>
 		private void AccountCreationError(string errorText)
 		{
 			pleaseWaitCreationText.text = errorText;
 			goBackCreationButton.SetActive(true);
 		}
 
+/// <summary>
+/// Blackholes for user profile creation, not actually used atm
+/// </summary>
 		static void NewUserProfileSuccess(string msg) { }
 
 		static void NewUserProfileFailed(string msg) { }
@@ -211,6 +220,9 @@ namespace Lobby
 			PerformLogin();
 		}
 
+		/// <summary>
+		/// Initiates all login actions from the GUI
+		/// </summary>
 		public void PerformLogin()
 		{
 			if (!LobbyManager.Instance.accountLogin.ValidLogin())
@@ -227,6 +239,9 @@ namespace Lobby
 			LobbyManager.Instance.accountLogin.TryLogin(LoginSuccess, LoginError);
 		}
 
+		/// <summary>
+		/// GUI hook for logout, does gui actions and forwards logout to databaseAPI
+		/// </summary>
 		public void OnLogout()
 		{
 			SoundManager.Play("Click01");
@@ -235,22 +250,30 @@ namespace Lobby
 			ShowLoginScreen();
 		}
 
+		/// <summary>
+		/// Process successfull login
+		/// resets loggin attempts
+		/// </summary>
 		private void LoginSuccess(string msg)
 		{
 			logginAttempts = 0;
-			//Put character for current logged in user into playerprefs and playermanager
 			//TODO Show character editor if no character is recieved but loggin succeded
 			loggingInText.text = "Login Success..";
 
 			ShowConnectionPanel();
 		}
 
+		/// <summary>
+		/// Process failed login
+		/// Retries login 3 times, after which it displays the error and executes logout to clean any leftovers
+		/// </summary>
 		private void LoginError(string msg)
 		{
 			logginAttempts++;
 			if(logginAttempts > 3)
 			{
 				ServerData.Instance.OnLogOut(); //Just in case
+
 			loggingInText.text = "Login failed:" + msg;
 			loginGoBackButton.SetActive(true);
 			}

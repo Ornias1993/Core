@@ -31,6 +31,11 @@ namespace DatabaseAPI
 			}
 		}
 
+		/// <summary>
+		/// Firebase Defines.
+		/// </summary>
+		//TODO FirebaseRoot can be set back to private once "ServerData.GetData" is changed to be more universal
+
 		public const string FirebaseRoot = "https://firestore.googleapis.com/v1/projects/expedition13/databases/(default)/documents";
 		private Firebase.Auth.FirebaseAuth auth;
 		public static Firebase.Auth.FirebaseAuth Auth => Instance.auth;
@@ -122,6 +127,10 @@ namespace DatabaseAPI
 			}
 		}
 
+		/// <summary>
+		/// Sets the tokens
+		/// If there is a token and there is no current user and character, it grabs those.
+		/// </summary>
 		void SetToken(string result)
 		{
 
@@ -146,8 +155,7 @@ namespace DatabaseAPI
 			{
 				if (!string.IsNullOrEmpty(Instance.refreshToken))
 				{
-
-					Logger.Log("Token is: " + Instance.refreshToken);
+					Logger.Log("Grabbing Profile and Character...", Category.DatabaseAPI);
 					if (string.IsNullOrEmpty(PlayerManager.CurrentUserProfile.id))
 					{
 						Instance.StartCoroutine(GetUserProfile(user.UserId, GetSuccess, GetFailed));
@@ -170,8 +178,10 @@ namespace DatabaseAPI
 
 		void NewCharacterFailed(string msg) { }
 
-		//end blackhole
 
+/// <summary>
+/// DOes the actual logout, after signing out clears every setting to be sure new user has clean slate.
+/// </summary>
 		public void OnLogOut()
 		{
 			auth.SignOut();

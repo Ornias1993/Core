@@ -13,6 +13,14 @@ using System.Threading.Tasks;
 
 namespace DatabaseAPI
 {
+	/// <summary>
+	/// This script processes verification of Tokens for authentication on the server
+	/// Not server specific, could validate tokens everywhere
+	/// Works without FirebaseAPI
+	///
+	/// Source/Inspiration:
+	/// https://github.com/FriendsOfSpatial/FirebaseAuth
+	/// </summary>
 	public partial class ServerData
     {
         static readonly DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);

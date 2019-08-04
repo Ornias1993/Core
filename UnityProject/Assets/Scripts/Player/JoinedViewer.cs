@@ -22,13 +22,13 @@ public class JoinedViewer : NetworkBehaviour
 	{
 		base.OnStartLocalPlayer();
 
-		// Send steamId to server for player setup.
+		// Send FirebaseID to server for player setup.
 		CmdServerSetupPlayer(PlayerManager.CurrentUserProfile.id);
-Logger.Log("Used ID for start: " + PlayerManager.CurrentUserProfile.id);
 	}
 
 	/// <summary>
 	/// Sends a userdata to the server to add to playerlist
+	/// Doesnt send firebaseID, SteamID or role, as those get added after authentication
 	/// </summary>
 	[Command]
 	private void CmdServerSetupPlayer(string firebaseId)
@@ -51,8 +51,8 @@ Logger.Log("Used ID for start: " + PlayerManager.CurrentUserProfile.id);
 		PlayerManager.SetViewerForControl(this);
 		UIManager.ResetAllUI();
 
-			//Send request to be authenticated by the server
-			StartCoroutine(WaitUntilServerInit());
+		//Send request to be authenticated by the server
+		StartCoroutine(WaitUntilServerInit());
 
 
 		// If player is joining for the first time let them pick faction and job, otherwise rejoin character.
@@ -68,9 +68,13 @@ Logger.Log("Used ID for start: " + PlayerManager.CurrentUserProfile.id);
 		}
 	}
 
-	//Just ensures connected player record is set on the server first before Auth req is sent
+	/// <summary>
+	/// Send all requests to get authenticated by the server.
+	/// Not sending the firebase authentication will lead to a kick!
+	/// </summary>
 	IEnumerator WaitUntilServerInit()
 	{
+		//Just ensures connected player record is set on the server first before Auth req is sent
 		yield return WaitFor.EndOfFrame;
 		if (BuildPreferences.isSteamServer)
 		{

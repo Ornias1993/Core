@@ -6,7 +6,7 @@ using Steamworks.Data;
 /// <summary>
 /// This message checks if the steam ID send by player, is the same as the ticket they get from steam
 /// basically it authenticates the steamID
-/// Not sending a steamID would (prob) not lead to kicking, but if a user sends a steam ID it should be verified.
+/// Not sending a steamID should (prob) not lead to kicking, but if a user sends a steam ID it should be verified.
 /// </summary>
 public class RequestSteamAuthMessage : ClientMessage
 {
